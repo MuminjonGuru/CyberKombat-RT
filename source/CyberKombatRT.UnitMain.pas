@@ -32,6 +32,7 @@ Type
     Procedure BtnURLScanVTClick(Sender: TObject);
     Procedure BtnScanURLogClick(Sender: TObject);
   Private
+    VT_API_KEY: String;
     // WebShield Functions
     Function PostToVirusTotal(Const URL, APIKey: String): String;
     Function GetVirusTotalAnalysis(Const AnalysisID: String): String;
@@ -58,9 +59,6 @@ Type
   Public
     Constructor Create(Const ScriptPath: String);
   End;
-
-Const
-  VT_API_KEY = '';
 
 Var
   FormMain: TFormMain;
@@ -234,6 +232,17 @@ Begin
   Begin
     StatusBar1.Panels.Items[1].Text := 'Connection: Down';
   End;
+
+  // VirusTotal API Key Input Box
+  VT_API_KEY := InputBox('API Key Required', 'Please enter your API Key:', '');
+  if VT_API_KEY = '' then
+  begin
+    ShowMessage('No API Key provided.');
+  end
+  else
+  begin
+    ShowMessage('Key accepted');
+  end;
 
 End;
 
