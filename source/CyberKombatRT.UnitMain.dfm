@@ -106,7 +106,7 @@ object FormMain: TFormMain
     object TabSheet5: TTabSheet
       Caption = 'Web Shield'
       ImageIndex = 4
-      object LEditURL: TLabeledEdit
+      object EditURL: TLabeledEdit
         Left = 20
         Top = 80
         Width = 789
@@ -146,14 +146,14 @@ object FormMain: TFormMain
         ScrollBars = ssVertical
         TabOrder = 2
       end
-      object Button1: TButton
+      object BtnScanURLog: TButton
         Left = 935
         Top = 80
         Width = 65
         Height = 33
         Caption = 'Log'
         TabOrder = 3
-        OnClick = Button1Click
+        OnClick = BtnScanURLogClick
       end
     end
   end

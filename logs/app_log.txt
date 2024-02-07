@@ -1,1 +1,3 @@
 2024-02-07 04:54:47 - Error on VT URL Scan: Invalid class typecast
+2024-02-07 10:22:07 - Error on VT URL Scan: Error adding header: (12150) The requested header was not found
+2024-02-07 10:22:32 - Error on VT URL Scan: Error adding header: (12150) The requested header was not found

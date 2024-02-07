@@ -23,20 +23,27 @@ Type
     PythonGUIInputOutputNA: TPythonGUIInputOutput;
     TimerNetworkActivity: TTimer;
     TabSheet5: TTabSheet;
-    LEditURL: TLabeledEdit;
+    EditURL: TLabeledEdit;
     BtnURLScanVT: TButton;
     MemoURLCheckLog: TMemo;
-    Button1: TButton;
+    BtnScanURLog: TButton;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
-    Procedure Button1Click(Sender: TObject);
+    Procedure BtnScanURLogClick(Sender: TObject);
   Private
-    { Private declarations }
-    Procedure WriteToLogFile(Const Msg: String);
+    // WebShield Functions
     Function PostToVirusTotal(Const URL, APIKey: String): String;
     Function GetVirusTotalAnalysis(Const AnalysisID: String): String;
+    Function ExtractWebrootResultFromJSON(const JSONStr: string): String;
+    Function FormatDataURLog(const WebsiteName, FResult: string): string;
+
+    // Utils
+    Procedure SaveDataToFile(const Data, FilePath: string);
     Function CheckNetwork: boolean;
+
+    // Error related functions
+    Procedure WriteToLogFile(Const Msg: String);
   Public
     { Public declarations }
   End;
@@ -96,17 +103,34 @@ Begin
   End;
 End;
 
+procedure TFormMain.SaveDataToFile(const Data, FilePath: string);
+begin
+  try
+    // Check if the file exists; if not, it will be created automatically
+    if TFile.Exists(FilePath) then
+      // Append the data to the file with a new line
+      TFile.AppendAllText(FilePath, Data + sLineBreak)
+    else
+      // Create the file and write the data
+      TFile.WriteAllText(FilePath, Data + sLineBreak);
+  except
+    on E: Exception do
+      // Handle the error, for example, log it or show a message to the user
+      WriteToLogFile('Error_writing_to_file_' + E.Message +  '_' + FilePath);
+  end;
+end;
+
 Procedure TFormMain.BtnURLScanVTClick(Sender: TObject);
 Begin
-  If LEditURL.Text = '' Then
+  If EditURL.Text = '' Then
   Begin
-    LEditURL.SetFocus;
+    EditURL.SetFocus;
   End
   Else
   Begin
     // VirusTotal URL Scan
     Try
-      Var Response := PostToVirusTotal(LEditURL.Text, VT_API_KEY);
+      var Response := PostToVirusTotal(EditURL.Text, VT_API_KEY);
 
       var LJSONObj := TJSONObject.ParseJSONValue(Response) as TJSONObject;
       try
@@ -118,15 +142,20 @@ Begin
           if Assigned(LDataObj) then
           begin
             var LIDValue := LDataObj.GetValue('id').Value;
-            Response := GetVirusTotalAnalysis(LIDValue);
+            Response := GetVirusTotalAnalysis(LIDValue);  // whole analysis
+
+            // now we have formatted final result
+            var FinalResult
+              := FormatDataURLog(EditURL.Text, ExtractWebrootResultFromJSON(Response));
+
+            MemoURLCheckLog.Lines.Add(FinalResult);
+
+            SaveDataToFile(FinalResult, 'D:\CyberKombat RT\db\Webroot.CyK');
           end;
         end;
       finally
         LJSONObj.Free;
       end;
-
-      MemoURLCheckLog.Lines.Add(Response);
-
     Except
       On E: Exception Do
         WriteToLogFile('Error on VT URL Scan: ' + E.Message);
@@ -134,9 +163,9 @@ Begin
   End;
 End;
 
-Procedure TFormMain.Button1Click(Sender: TObject);
+Procedure TFormMain.BtnScanURLogClick(Sender: TObject);
 Begin
-  // capture to a file
+  // capture to a file  - Will be moved to OnCreate function probably
 End;
 
 Function TFormMain.CheckNetwork: boolean;
@@ -152,6 +181,46 @@ Begin
   // INTERNET_CONNECTION_PROXY           = 4;
   // INTERNET_CONNECTION_MODEM_BUSY      = 8;
 End;
+
+Function TFormMain.ExtractWebrootResultFromJSON(const JSONStr: string): String;
+begin
+  var LJSONObj := TJSONObject.ParseJSONValue(JSONStr) as TJSONObject;
+  try
+    if Assigned(LJSONObj) then
+    begin
+      // Navigate to the "data" object
+      var LDataObj := LJSONObj.GetValue('data') as TJSONObject;
+      if Assigned(LDataObj) then
+      begin
+        // "attributes"
+        var LAttributesObj := LDataObj.GetValue('attributes') as TJSONObject;
+        if Assigned(LAttributesObj) then
+        begin
+          // "results"
+          var LResultsObj := LAttributesObj.GetValue('results') as TJSONObject;
+          if Assigned(LResultsObj) then
+          begin
+            // "Webroot"
+            var LWebrootObj := LResultsObj.GetValue('Webroot') as TJSONObject;
+            if Assigned(LWebrootObj) then
+            begin
+              Result := LWebrootObj.GetValue('result').Value;
+            end;
+          end;
+        end;
+      end;
+    end;
+  finally
+    LJSONObj.Free;
+  end;
+end;
+
+function TFormMain.FormatDataURLog(const WebsiteName, FResult: string): string;
+begin
+  // Formats the date-time to a string and concatenates the website name and result
+  var CurrentDateTime := Now;
+  Result := FormatDateTime('yyyy-mm-dd hh:nn:ss', CurrentDateTime) + ',' + WebsiteName + ',' + FResult;
+end;
 
 Procedure TFormMain.FormCreate(Sender: TObject);
 Begin
