@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet5
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -62,6 +62,70 @@ object FormMain: TFormMain
     object TabSheet2: TTabSheet
       Caption = 'File | Reg Manager'
       ImageIndex = 1
+      object LblRegistryChanges: TLabel
+        Left = 28
+        Top = 35
+        Width = 207
+        Height = 31
+        Caption = 'Registry Changes '#11015#65039'  '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -23
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label1: TLabel
+        Left = 420
+        Top = 35
+        Width = 148
+        Height = 31
+        Caption = 'File Activity '#11015#65039'  '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -23
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object MemoRegistryChanges: TMemo
+        Left = 28
+        Top = 88
+        Width = 305
+        Height = 401
+        BevelInner = bvSpace
+        BevelKind = bkSoft
+        DragCursor = crHandPoint
+        EditMargins.Left = 1
+        EditMargins.Right = 1
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Consolas'
+        Font.Style = []
+        ParentFont = False
+        ScrollBars = ssVertical
+        TabOrder = 0
+      end
+      object MemoFileActivity: TMemo
+        Left = 420
+        Top = 88
+        Width = 305
+        Height = 401
+        BevelInner = bvSpace
+        BevelKind = bkSoft
+        DragCursor = crHandPoint
+        EditMargins.Left = 1
+        EditMargins.Right = 1
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Consolas'
+        Font.Style = []
+        ParentFont = False
+        ScrollBars = ssVertical
+        TabOrder = 1
+      end
     end
     object TabSheet3: TTabSheet
       Caption = 'ClamAV'
@@ -172,7 +236,28 @@ object FormMain: TFormMain
   object TimerNetworkActivity: TTimer
     Interval = 20000
     OnTimer = TimerNetworkActivityTimer
-    Left = 168
+    Left = 160
     Top = 444
+  end
+  object PythonGUIInputOutputRegistry: TPythonGUIInputOutput
+    UnicodeIO = True
+    RawOutput = False
+    Left = 112
+    Top = 128
+  end
+  object TimerRegistryChanges: TTimer
+    Interval = 15000
+    Left = 112
+    Top = 192
+  end
+  object PythonGUIInputOutputFileActivity: TPythonGUIInputOutput
+    UnicodeIO = True
+    RawOutput = False
+    Left = 560
+    Top = 136
+  end
+  object TimerFileActivity: TTimer
+    Left = 560
+    Top = 200
   end
 end

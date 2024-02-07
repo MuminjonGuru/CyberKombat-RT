@@ -27,6 +27,14 @@ Type
     BtnURLScanVT: TButton;
     MemoURLCheckLog: TMemo;
     BtnScanURLog: TButton;
+    PythonGUIInputOutputRegistry: TPythonGUIInputOutput;
+    MemoRegistryChanges: TMemo;
+    LblRegistryChanges: TLabel;
+    Label1: TLabel;
+    MemoFileActivity: TMemo;
+    TimerRegistryChanges: TTimer;
+    PythonGUIInputOutputFileActivity: TPythonGUIInputOutput;
+    TimerFileActivity: TTimer;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
