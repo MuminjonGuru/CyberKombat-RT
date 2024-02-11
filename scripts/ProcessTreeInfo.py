@@ -1,4 +1,5 @@
 import csv
+import os
 
 # Define a list of malicious process names
 malicious_names = [
@@ -21,16 +22,18 @@ def is_suspicious(parent_id, child_processes, parent_name):
     if parent_name.lower() not in malicious_names and any(child.lower() in unusual_child_processes for child in child_processes):
         return True
 
-    # Example behavioral checks:
     # A suspicious process might have more than a certain number of child processes
     if len(child_processes) > 5:
         return True
 
-    # Add more behavioral and contextual checks as needed
     return False
 
+# Path for the process_tree_info.csv file
+folder_path = os.path.join(os.path.expanduser('~'), 'Documents', 'CyberKombatData')
+file_path = os.path.join(folder_path, 'process_tree_info.csv')
+
 # Read the process tree information from the CSV
-with open('process_tree_info.csv', 'r') as csvfile:
+with open(file_path, mode='r', encoding='utf-8') as csvfile:
     reader = csv.DictReader(csvfile)
 
     process_tree = {}
@@ -47,5 +50,3 @@ with open('process_tree_info.csv', 'r') as csvfile:
     for parent_id, child_processes in process_tree.items():
         if is_suspicious(parent_id, child_processes, process_names[parent_id]):
             print(f"Suspicious process tree: Parent ID {parent_id} ({process_names[parent_id]}) has the following child processes: {child_processes}")
-
-# Note: This script assumes your CSV includes a ParentName column. If not, you'll need to adjust the data extraction logic accordingly.
