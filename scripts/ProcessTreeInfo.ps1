@@ -1,17 +1,26 @@
-# ProcessTreeInfo.ps1
-Get-WmiObject Win32_Process | 
-ForEach-Object { 
-    $process = $_
-    $children = Get-WmiObject Win32_Process -Filter "ParentProcessId = $($process.ProcessId)"
-    $children | ForEach-Object {
-        [PSCustomObject]@{
+# ProcessTreeInfo.ps1 - Optimized Version
+
+# Fetch all processes at once to avoid repeated WMI queries
+$allProcesses = Get-CimInstance Win32_Process
+
+# Initialize an array to hold the results
+$results = @()
+
+# Iterate over all processes to match parent and child processes
+foreach ($process in $allProcesses) {
+    # Filter child processes in memory
+    $children = $allProcesses | Where-Object { $_.ParentProcessId -eq $process.ProcessId }
+
+    # Construct the custom object for each child process and add it to the results array
+    foreach ($child in $children) {
+        $results += [PSCustomObject]@{
             ParentId = $process.ProcessId
             ParentName = $process.Name
-            ChildId = $_.ProcessId
-            ChildName = $_.Name
+            ChildId = $child.ProcessId
+            ChildName = $child.Name
         }
     }
-} | Export-Csv -Path "process_tree_info.csv" -NoTypeInformation
+}
 
-# This script uses WMI (Windows Management Instrumentation) to fetch all running processes and their child processes,
-#  outputting the results to a CSV file with process IDs and names for both parents and children.
+# Export the results to a CSV file
+$results | Export-Csv -Path "process_tree_info.csv" -NoTypeInformation
