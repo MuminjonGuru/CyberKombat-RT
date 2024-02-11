@@ -37,9 +37,6 @@ file_path = os.path.join(folder_path, 'network_info.csv')
 # Run the PowerShell script
 run_powershell_script("NetworkInfo.ps1")
 
-# Wait for 0.25 second to ensure the PowerShell script has completed
-time.sleep(0.25)
-
 # Read and analyze the network information from the CSV file
 with open(file_path, 'r') as csvfile:
     reader = csv.DictReader(csvfile)
