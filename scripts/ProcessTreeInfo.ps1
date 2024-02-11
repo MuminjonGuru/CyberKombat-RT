@@ -1,4 +1,15 @@
-# ProcessTreeInfo.ps1 - Optimized Version
+# ProcessTreeInfo.ps1 - Optimized Version with Dynamic Output Directory
+
+# Define the path for the CyberKombatData folder in the user's Documents directory
+$folderPath = [System.IO.Path]::Combine([Environment]::GetFolderPath("MyDocuments"), "CyberKombatData")
+
+# Check if the folder exists; if not, create it
+if (-not (Test-Path -Path $folderPath)) {
+    New-Item -ItemType Directory -Path $folderPath
+}
+
+# Define the file path for the CSV file within the CyberKombatData folder
+$filePath = [System.IO.Path]::Combine($folderPath, "process_tree_info.csv")
 
 # Fetch all processes at once to avoid repeated WMI queries
 $allProcesses = Get-CimInstance Win32_Process
@@ -22,5 +33,5 @@ foreach ($process in $allProcesses) {
     }
 }
 
-# Export the results to a CSV file
-$results | Export-Csv -Path "process_tree_info.csv" -NoTypeInformation
+# Export the results to the CSV file at the determined file path
+$results | Export-Csv -Path $filePath -NoTypeInformation
