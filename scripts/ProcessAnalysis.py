@@ -35,10 +35,17 @@ def is_suspicious(process_info, child_processes):
 
     return False
 
-# Function to run the PowerShell script and get process information
-def run_powershell_script(script_path):
-    subprocess.run(["powershell.exe", "-ExecutionPolicy", "Unrestricted", script_path], capture_output=True)
+# Function to run the PowerShell script silently
+def run_powershell_script(script_name):
+    # Define startup info for subprocess to run silently
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    startupinfo.wShowWindow = subprocess.SW_HIDE
 
+    # Run the PowerShell script
+    subprocess.run(["powershell.exe", "-ExecutionPolicy", "Unrestricted", "-File", script_name],
+                   startupinfo=startupinfo, capture_output=True)
+    
 # Main function to analyze processes
 def analyze_processes():
     script_path = 'ProcessTreeInfo.ps1'
