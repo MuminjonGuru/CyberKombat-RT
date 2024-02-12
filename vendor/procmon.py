@@ -34,5 +34,7 @@ if __name__ == "__main__":
     print("Waiting for the capture to complete...")
     
     # Now that the output file should exist, proceed to analyze it
-    print("Capture complete. Analyzing output...")
-    analyze_output_file(output_file_path)
+    print("Capture complete.")
+
+    # analyze function is off for now
+    # analyze_output_file(output_file_path)

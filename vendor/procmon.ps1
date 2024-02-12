@@ -22,7 +22,7 @@ if (-not (Test-Path -Path $procMonExecutablePath)) {
 }
 
 # Start ProcMon with command-line arguments to begin capturing and minimize the window
-& $procMonExecutablePath /Minimized /Quiet /BackingFile $logFilePath /NoFilter
+& $procMonExecutablePath /Minimized /Quiet /BackingFile $logFilePath /LoadConfig $scriptPath\filter1.pmf
 
 # Inform the user that capturing has started
 Write-Host "ProcMon capturing has started. Log file will be saved to: $logFilePath"
