@@ -19,12 +19,30 @@ function Check-ExecutableExists {
     }
 }
 
+function Check-ConfigFileExists {
+    param (
+        [string]$ConfigPath
+    )
+    if (-not (Test-Path -Path $ConfigPath)) {
+        Write-Host "Configuration file not found at path: $ConfigPath. Nothing happened."
+        return $false
+    } else {
+        return $true
+    }
+}
+
 function Start-ProcMonCapture {
     param (
         [string]$ExecutablePath,
         [string]$LogFilePath,
         [string]$ConfigPath
     )
+    # Check if configuration file exists before starting ProcMon
+    $configExists = Check-ConfigFileExists -ConfigPath $ConfigPath
+    if (-not $configExists) {
+        return # Exit the function early if config file does not exist
+    }
+
     & $ExecutablePath /Minimized /Quiet /BackingFile $LogFilePath /LoadConfig $ConfigPath
     if ($LASTEXITCODE -ne 0) {
         throw "Failed to start ProcMon capturing."
