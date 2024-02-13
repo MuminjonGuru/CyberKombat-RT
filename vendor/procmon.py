@@ -3,11 +3,14 @@ import os
 import time
 
 def run_powershell_script(script_name):
-    # Define the full path to the PowerShell script
-    script_path = os.path.join(os.getcwd(), script_name)
-    
-    # Run the PowerShell script silently
-    subprocess.run(["powershell.exe", "-ExecutionPolicy", "Bypass", "-File", script_path], capture_output=True)
+    # Define startup info for subprocess to run silently
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    startupinfo.wShowWindow = subprocess.SW_HIDE
+
+    # Run the PowerShell script
+    subprocess.run(["powershell.exe", "-ExecutionPolicy", "Unrestricted", "-File", script_name],
+                   startupinfo=startupinfo, capture_output=True)
 
 def analyze_output_file(file_path):
     # Placeholder function to analyze the output file
