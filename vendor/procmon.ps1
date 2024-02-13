@@ -79,7 +79,7 @@ try {
     Check-ExecutableExists -ExecutablePath $procMonExecutablePath
 
     # Start ProcMon with command-line arguments to begin capturing
-    Start-ProcMonCapture -ExecutablePath $procMonExecutablePath -LogFilePath $logFilePath -ConfigPath "$scriptPath\Config1.PMC"
+    Start-ProcMonCapture -ExecutablePath $procMonExecutablePath -LogFilePath $logFilePath -ConfigPath "$scriptPath\Config1.pmc"
 
     # Wait for a specific duration for capturing (e.g., 60 seconds)
     Start-Sleep -Seconds 60
