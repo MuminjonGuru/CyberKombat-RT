@@ -30,7 +30,7 @@ if __name__ == "__main__":
     run_powershell_script(ps_script_name)
     
     # Assuming the PowerShell script has a fixed output path or you adjust this path as needed
-    output_file_path = os.path.join(os.path.expanduser('~'), 'Documents', 'CyberKombatData', 'ProcMonLog.pml')
+    output_file_path = os.path.join(os.path.expanduser('~'), 'Documents', 'CyberKombatData', 'ProcMonLog.csv')
     
     # Wait for a bit to ensure the PowerShell script has enough time to start ProcMon and generate the output
     # This delay may need to be adjusted based on how long your PowerShell script runs
