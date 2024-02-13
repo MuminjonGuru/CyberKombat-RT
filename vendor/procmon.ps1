@@ -81,8 +81,8 @@ try {
     # Start ProcMon with command-line arguments to begin capturing
     Start-ProcMonCapture -ExecutablePath $procMonExecutablePath -LogFilePath $logFilePath -ConfigPath "$scriptPath\Config1.pmc"
 
-    # Wait for a specific duration for capturing (e.g., 60 seconds)
-    Start-Sleep -Seconds 60
+    # Wait for a specific duration for capturing (e.g., 10 seconds)
+    Start-Sleep -Seconds 10
 
     # Stop ProcMon capturing
     Stop-ProcMonCapture -ExecutablePath $procMonExecutablePath
