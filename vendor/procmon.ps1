@@ -31,6 +31,20 @@ function Check-ConfigFileExists {
     }
 }
 
+function Save-ProcMonLogAsCsv {
+    param (
+        [string]$ExecutablePath,
+        [string]$LogFilePath,
+        [string]$CsvFilePath
+    )
+    # Save the .pml log file as a .csv file
+    & $ExecutablePath /OpenLog $LogFilePath /SaveAs $CsvFilePath
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to save ProcMon log as CSV."
+    }
+    Write-Host "ProcMon log has been saved as CSV: $CsvFilePath"
+}
+
 function Start-ProcMonCapture {
     param (
         [string]$ExecutablePath,
@@ -73,6 +87,8 @@ try {
 
     # Define the file path for the ProcMon log file within the CyberKombatData folder
     $logFilePath = [System.IO.Path]::Combine($folderPath, "ProcMonLog.pml")
+    # Define the file path for the CSV file to save the data
+    $csvFilePath = [System.IO.Path]::Combine($folderPath, "ProcMonLog.csv")
 
     # Set the ProcMon executable path to be in the same directory as this script
     $procMonExecutablePath = [System.IO.Path]::Combine($scriptPath, "procmon.exe")
@@ -87,7 +103,8 @@ try {
     # Stop ProcMon capturing
     Stop-ProcMonCapture -ExecutablePath $procMonExecutablePath
 
-    # Add automation for post-capture processing if applicable
+    # Save the ProcMon log as a CSV file
+    Save-ProcMonLogAsCsv -ExecutablePath $procMonExecutablePath -LogFilePath $logFilePath -CsvFilePath $csvFilePath
 
 } catch {
     Write-Error "An error occurred: $_"
