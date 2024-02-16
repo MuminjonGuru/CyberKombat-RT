@@ -9,16 +9,16 @@ object FormMain: TFormMain
   CustomTitleBar.CaptionAlignment = taCenter
   CustomTitleBar.Enabled = True
   CustomTitleBar.Height = 38
-  CustomTitleBar.BackgroundColor = 11625216
+  CustomTitleBar.BackgroundColor = 13924352
   CustomTitleBar.ForegroundColor = clWhite
   CustomTitleBar.InactiveBackgroundColor = clWhite
   CustomTitleBar.InactiveForegroundColor = 10066329
   CustomTitleBar.ButtonForegroundColor = clWhite
-  CustomTitleBar.ButtonBackgroundColor = 11625216
+  CustomTitleBar.ButtonBackgroundColor = 13924352
   CustomTitleBar.ButtonHoverForegroundColor = clWhite
-  CustomTitleBar.ButtonHoverBackgroundColor = 8801024
+  CustomTitleBar.ButtonHoverBackgroundColor = 11166464
   CustomTitleBar.ButtonPressedForegroundColor = clWhite
-  CustomTitleBar.ButtonPressedBackgroundColor = 4663296
+  CustomTitleBar.ButtonPressedBackgroundColor = 7028224
   CustomTitleBar.ButtonInactiveForegroundColor = 10066329
   CustomTitleBar.ButtonInactiveBackgroundColor = clWhite
   Font.Charset = DEFAULT_CHARSET
@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet2
+    ActivePage = TabSheet5
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -63,7 +63,7 @@ object FormMain: TFormMain
       Caption = 'File | Reg Manager'
       ImageIndex = 1
       object LblRegistryChanges: TLabel
-        Left = 28
+        Left = 4
         Top = 35
         Width = 207
         Height = 31
@@ -76,7 +76,7 @@ object FormMain: TFormMain
         ParentFont = False
       end
       object Label1: TLabel
-        Left = 420
+        Left = 529
         Top = 35
         Width = 148
         Height = 31
@@ -89,9 +89,9 @@ object FormMain: TFormMain
         ParentFont = False
       end
       object MemoRegistryChanges: TMemo
-        Left = 28
+        Left = 4
         Top = 88
-        Width = 305
+        Width = 500
         Height = 401
         BevelInner = bvSpace
         BevelKind = bkSoft
@@ -108,9 +108,9 @@ object FormMain: TFormMain
         TabOrder = 0
       end
       object MemoFileActivity: TMemo
-        Left = 420
+        Left = 529
         Top = 88
-        Width = 305
+        Width = 500
         Height = 401
         BevelInner = bvSpace
         BevelKind = bkSoft
@@ -150,7 +150,7 @@ object FormMain: TFormMain
       object MemoNetworkActivity: TMemo
         Left = 20
         Top = 80
-        Width = 305
+        Width = 997
         Height = 401
         BevelInner = bvSpace
         BevelKind = bkSoft
@@ -170,6 +170,13 @@ object FormMain: TFormMain
     object TabSheet5: TTabSheet
       Caption = 'Web Shield'
       ImageIndex = 4
+      object Label2: TLabel
+        Left = 20
+        Top = 346
+        Width = 171
+        Height = 25
+        Caption = 'Upload a file to check'
+      end
       object EditURL: TLabeledEdit
         Left = 20
         Top = 80
@@ -219,6 +226,53 @@ object FormMain: TFormMain
         TabOrder = 3
         OnClick = BtnScanURLogClick
       end
+      object Memo1: TMemo
+        Left = 20
+        Top = 383
+        Width = 980
+        Height = 150
+        BevelInner = bvSpace
+        BevelKind = bkSoft
+        DragCursor = crHandPoint
+        EditMargins.Left = 1
+        EditMargins.Right = 1
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Consolas'
+        Font.Style = []
+        ParentFont = False
+        ScrollBars = ssVertical
+        TabOrder = 4
+      end
+      object BtnUpload: TButton
+        Left = 815
+        Top = 344
+        Width = 114
+        Height = 33
+        Caption = 'Upload'
+        TabOrder = 5
+        OnClick = BtnURLScanVTClick
+      end
+      object BtnGetFileReportById: TButton
+        Left = 935
+        Top = 344
+        Width = 65
+        Height = 33
+        Caption = 'Get'
+        Enabled = False
+        TabOrder = 6
+        OnClick = BtnScanURLogClick
+      end
+      object Edit1: TEdit
+        Left = 197
+        Top = 344
+        Width = 612
+        Height = 33
+        ReadOnly = True
+        TabOrder = 7
+        Text = 'File ID: [00x0]'
+      end
     end
   end
   object PythonEngineNetworkActivity: TPythonEngine
@@ -259,5 +313,9 @@ object FormMain: TFormMain
   object TimerFileActivity: TTimer
     Left = 560
     Top = 200
+  end
+  object OpenDialogFile: TOpenDialog
+    Left = 632
+    Top = 448
   end
 end

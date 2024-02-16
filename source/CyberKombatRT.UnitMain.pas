@@ -35,6 +35,12 @@ Type
     TimerRegistryChanges: TTimer;
     PythonGUIInputOutputFileActivity: TPythonGUIInputOutput;
     TimerFileActivity: TTimer;
+    Memo1: TMemo;
+    Label2: TLabel;
+    BtnUpload: TButton;
+    BtnGetFileReportById: TButton;
+    Edit1: TEdit;
+    OpenDialogFile: TOpenDialog;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
