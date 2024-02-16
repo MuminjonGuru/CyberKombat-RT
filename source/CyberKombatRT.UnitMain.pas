@@ -40,7 +40,7 @@ Type
     Label2: TLabel;
     BtnUpload: TButton;
     BtnGetFileReportById: TButton;
-    Edit1: TEdit;
+    EditSelectedFileDetails: TEdit;
     OpenDialogFile: TOpenDialog;
     ToggleSwitchNetworkActivity: TToggleSwitch;
     Procedure FormCreate(Sender: TObject);
@@ -48,8 +48,11 @@ Type
     Procedure BtnURLScanVTClick(Sender: TObject);
     Procedure BtnScanURLogClick(Sender: TObject);
     procedure ToggleSwitchNetworkActivityClick(Sender: TObject);
+    procedure BtnUploadClick(Sender: TObject);
+    procedure BtnGetFileReportByIdClick(Sender: TObject);
   Private
     VT_API_KEY: String;
+    SelectedFileName: String;
     // WebShield Functions
     Function PostToVirusTotal(Const URL, APIKey: String): String;
     Function GetVirusTotalAnalysis(Const AnalysisID: String): String;
@@ -135,6 +138,17 @@ begin
   end;
 end;
 
+procedure TFormMain.BtnUploadClick(Sender: TObject);
+begin
+  if OpenDialogFile.Execute then
+  begin
+    SelectedFileName := OpenDialogFile.FileName;
+
+    EditSelectedFileDetails.Text := 'File ID: [00x0]   -   File Path: ['
+      + SelectedFileName + ']';
+  end;
+end;
+
 Procedure TFormMain.BtnURLScanVTClick(Sender: TObject);
 Begin
   If EditURL.Text = '' Then
@@ -177,6 +191,18 @@ Begin
     End;
   End;
 End;
+
+procedure TFormMain.BtnGetFileReportByIdClick(Sender: TObject);
+begin
+  if SelectedFileName = '' then
+  begin
+    ShowMessage('Please, select a file!')
+  end
+  else
+  begin
+    // get the report by ID
+  end;
+end;
 
 Procedure TFormMain.BtnScanURLogClick(Sender: TObject);
 Begin

@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = WebShield
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -171,6 +171,7 @@ object FormMain: TFormMain
         Top = 47
         Width = 82
         Height = 27
+        State = tssOn
         TabOrder = 1
         OnClick = ToggleSwitchNetworkActivityClick
       end
@@ -260,7 +261,7 @@ object FormMain: TFormMain
         Height = 35
         Caption = 'Upload'
         TabOrder = 5
-        OnClick = BtnURLScanVTClick
+        OnClick = BtnUploadClick
       end
       object BtnGetFileReportById: TButton
         Left = 935
@@ -268,18 +269,17 @@ object FormMain: TFormMain
         Width = 65
         Height = 35
         Caption = 'Get'
-        Enabled = False
         TabOrder = 6
-        OnClick = BtnScanURLogClick
+        OnClick = BtnGetFileReportByIdClick
       end
-      object Edit1: TEdit
+      object EditSelectedFileDetails: TEdit
         Left = 197
         Top = 344
         Width = 612
         Height = 35
         ReadOnly = True
         TabOrder = 7
-        Text = 'File ID: [00x0]'
+        Text = 'File ID: [00x0]   -   File Path: [...]'
       end
     end
   end
@@ -323,6 +323,7 @@ object FormMain: TFormMain
     Top = 200
   end
   object OpenDialogFile: TOpenDialog
+    Title = 'Select a file to upload'
     Left = 632
     Top = 448
   end
