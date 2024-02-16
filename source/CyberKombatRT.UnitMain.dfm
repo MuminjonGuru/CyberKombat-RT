@@ -182,14 +182,14 @@ object FormMain: TFormMain
         Left = 20
         Top = 346
         Width = 171
-        Height = 25
+        Height = 35
         Caption = 'Upload a file to check'
       end
       object EditURL: TLabeledEdit
         Left = 20
         Top = 80
         Width = 789
-        Height = 33
+        Height = 35
         EditLabel.Width = 73
         EditLabel.Height = 25
         EditLabel.Caption = 'Scan URL'
@@ -201,7 +201,7 @@ object FormMain: TFormMain
         Left = 815
         Top = 80
         Width = 114
-        Height = 33
+        Height = 35
         Caption = 'Analyse'
         TabOrder = 1
         OnClick = BtnURLScanVTClick
@@ -229,7 +229,7 @@ object FormMain: TFormMain
         Left = 935
         Top = 80
         Width = 65
-        Height = 33
+        Height = 35
         Caption = 'Log'
         TabOrder = 3
         OnClick = BtnScanURLogClick
@@ -257,7 +257,7 @@ object FormMain: TFormMain
         Left = 815
         Top = 344
         Width = 114
-        Height = 33
+        Height = 35
         Caption = 'Upload'
         TabOrder = 5
         OnClick = BtnURLScanVTClick
@@ -266,7 +266,7 @@ object FormMain: TFormMain
         Left = 935
         Top = 344
         Width = 65
-        Height = 33
+        Height = 35
         Caption = 'Get'
         Enabled = False
         TabOrder = 6
@@ -276,7 +276,7 @@ object FormMain: TFormMain
         Left = 197
         Top = 344
         Width = 612
-        Height = 33
+        Height = 35
         ReadOnly = True
         TabOrder = 7
         Text = 'File ID: [00x0]'
