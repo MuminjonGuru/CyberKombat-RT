@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet4
+    ActivePage = WebShield
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -167,7 +167,7 @@ object FormMain: TFormMain
         TabOrder = 0
       end
     end
-    object TabSheet5: TTabSheet
+    object WebShield: TTabSheet
       Caption = 'Web Shield'
       ImageIndex = 4
       object Label2: TLabel

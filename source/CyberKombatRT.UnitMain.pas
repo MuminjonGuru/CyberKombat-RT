@@ -22,7 +22,7 @@ Type
     PythonEngineNetworkActivity: TPythonEngine;
     PythonGUIInputOutputNA: TPythonGUIInputOutput;
     TimerNetworkActivity: TTimer;
-    TabSheet5: TTabSheet;
+    WebShield: TTabSheet;
     EditURL: TLabeledEdit;
     BtnURLScanVT: TButton;
     MemoURLCheckLog: TMemo;
