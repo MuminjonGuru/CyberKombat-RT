@@ -7,7 +7,8 @@ Uses
   System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
   Vcl.ComCtrls, Vcl.ToolWin, Vcl.ActnMan, Vcl.ActnCtrls, Vcl.StdCtrls,
   PythonEngine, Vcl.PythonGUIInputOutput, Vcl.ExtCtrls, Vcl.Mask,
-  System.Net.URLClient, System.Net.HttpClient, System.Net.HttpClientComponent;
+  System.Net.URLClient, System.Net.HttpClient, System.Net.HttpClientComponent,
+  Vcl.WinXCtrls;
 
 Type
   TFormMain = Class(TForm)
@@ -41,10 +42,12 @@ Type
     BtnGetFileReportById: TButton;
     Edit1: TEdit;
     OpenDialogFile: TOpenDialog;
+    ToggleSwitchNetworkActivity: TToggleSwitch;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
     Procedure BtnScanURLogClick(Sender: TObject);
+    procedure ToggleSwitchNetworkActivityClick(Sender: TObject);
   Private
     VT_API_KEY: String;
     // WebShield Functions
@@ -304,6 +307,18 @@ Begin
     WriteToLogFile('NetworkInfo.py script not found or can`t access;');
   End;
 End;
+
+procedure TFormMain.ToggleSwitchNetworkActivityClick(Sender: TObject);
+begin
+  if ToggleSwitchNetworkActivity.State = tssOff then
+  begin
+    TimerNetworkActivity.Enabled := False;
+  end
+  else if ToggleSwitchNetworkActivity.State = tssOn then
+  begin
+    TimerNetworkActivity.Enabled := True;
+  end;
+end;
 
 Procedure TFormMain.WriteToLogFile(Const Msg: String);
 Var

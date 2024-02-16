@@ -166,6 +166,14 @@ object FormMain: TFormMain
         ScrollBars = ssVertical
         TabOrder = 0
       end
+      object ToggleSwitchNetworkActivity: TToggleSwitch
+        Left = 935
+        Top = 47
+        Width = 82
+        Height = 27
+        TabOrder = 1
+        OnClick = ToggleSwitchNetworkActivityClick
+      end
     end
     object WebShield: TTabSheet
       Caption = 'Web Shield'
