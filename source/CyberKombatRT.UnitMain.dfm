@@ -9,16 +9,16 @@ object FormMain: TFormMain
   CustomTitleBar.CaptionAlignment = taCenter
   CustomTitleBar.Enabled = True
   CustomTitleBar.Height = 38
-  CustomTitleBar.BackgroundColor = 13924352
-  CustomTitleBar.ForegroundColor = clWhite
+  CustomTitleBar.BackgroundColor = clWhite
+  CustomTitleBar.ForegroundColor = 65793
   CustomTitleBar.InactiveBackgroundColor = clWhite
   CustomTitleBar.InactiveForegroundColor = 10066329
-  CustomTitleBar.ButtonForegroundColor = clWhite
-  CustomTitleBar.ButtonBackgroundColor = 13924352
-  CustomTitleBar.ButtonHoverForegroundColor = clWhite
-  CustomTitleBar.ButtonHoverBackgroundColor = 11166464
-  CustomTitleBar.ButtonPressedForegroundColor = clWhite
-  CustomTitleBar.ButtonPressedBackgroundColor = 7028224
+  CustomTitleBar.ButtonForegroundColor = 65793
+  CustomTitleBar.ButtonBackgroundColor = clWhite
+  CustomTitleBar.ButtonHoverForegroundColor = 65793
+  CustomTitleBar.ButtonHoverBackgroundColor = 16053492
+  CustomTitleBar.ButtonPressedForegroundColor = 65793
+  CustomTitleBar.ButtonPressedBackgroundColor = 15395562
   CustomTitleBar.ButtonInactiveForegroundColor = 10066329
   CustomTitleBar.ButtonInactiveBackgroundColor = clWhite
   Font.Charset = DEFAULT_CHARSET
@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet2
+    ActivePage = WebShield
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -126,6 +126,22 @@ object FormMain: TFormMain
         ScrollBars = ssVertical
         TabOrder = 1
       end
+      object ToggleSwitchFileActivity: TToggleSwitch
+        Left = 947
+        Top = 39
+        Width = 82
+        Height = 27
+        State = tssOn
+        TabOrder = 2
+      end
+      object ToggleSwitchRegistryChanges: TToggleSwitch
+        Left = 422
+        Top = 39
+        Width = 82
+        Height = 27
+        State = tssOn
+        TabOrder = 3
+      end
     end
     object TabSheet3: TTabSheet
       Caption = 'ClamAV'
@@ -183,14 +199,14 @@ object FormMain: TFormMain
         Left = 20
         Top = 346
         Width = 171
-        Height = 35
+        Height = 25
         Caption = 'Upload a file to check'
       end
       object EditURL: TLabeledEdit
         Left = 20
         Top = 80
         Width = 789
-        Height = 35
+        Height = 33
         EditLabel.Width = 73
         EditLabel.Height = 25
         EditLabel.Caption = 'Scan URL'
@@ -276,7 +292,7 @@ object FormMain: TFormMain
         Left = 197
         Top = 344
         Width = 612
-        Height = 35
+        Height = 33
         ReadOnly = True
         TabOrder = 7
         Text = 'File ID: [00x0]   -   File Path: [...]'

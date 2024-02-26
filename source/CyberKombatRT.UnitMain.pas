@@ -43,6 +43,8 @@ Type
     EditSelectedFileDetails: TEdit;
     OpenDialogFile: TOpenDialog;
     ToggleSwitchNetworkActivity: TToggleSwitch;
+    ToggleSwitchFileActivity: TToggleSwitch;
+    ToggleSwitchRegistryChanges: TToggleSwitch;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
