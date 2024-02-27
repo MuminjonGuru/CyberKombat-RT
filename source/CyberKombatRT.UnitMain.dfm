@@ -251,7 +251,7 @@ object FormMain: TFormMain
         TabOrder = 3
         OnClick = BtnScanURLogClick
       end
-      object Memo1: TMemo
+      object MemoFileScanLog: TMemo
         Left = 20
         Top = 383
         Width = 980
@@ -342,5 +342,17 @@ object FormMain: TFormMain
     Title = 'Select a file to upload'
     Left = 632
     Top = 448
+  end
+  object NetHTTPReqUploadToScan: TNetHTTPRequest
+    Asynchronous = True
+    Client = NetHTTPClientUploadToScan
+    Left = 624
+    Top = 522
+  end
+  object NetHTTPClientUploadToScan: TNetHTTPClient
+    Asynchronous = True
+    UserAgent = 'Embarcadero URI Client/1.0'
+    Left = 464
+    Top = 498
   end
 end

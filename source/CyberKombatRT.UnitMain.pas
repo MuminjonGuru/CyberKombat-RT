@@ -36,7 +36,7 @@ Type
     TimerRegistryChanges: TTimer;
     PythonGUIInputOutputFileActivity: TPythonGUIInputOutput;
     TimerFileActivity: TTimer;
-    Memo1: TMemo;
+    MemoFileScanLog: TMemo;
     Label2: TLabel;
     BtnUpload: TButton;
     BtnGetFileReportById: TButton;
@@ -45,6 +45,8 @@ Type
     ToggleSwitchNetworkActivity: TToggleSwitch;
     ToggleSwitchFileActivity: TToggleSwitch;
     ToggleSwitchRegistryChanges: TToggleSwitch;
+    NetHTTPReqUploadToScan: TNetHTTPRequest;
+    NetHTTPClientUploadToScan: TNetHTTPClient;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
@@ -60,6 +62,7 @@ Type
     Function GetVirusTotalAnalysis(Const AnalysisID: String): String;
     Function ExtractWebrootResultFromJSON(const JSONStr: string): String;
     Function FormatDataURLog(const WebsiteName, FResult: string): string;
+    Function GetFileReport(const FileID: string): string;
 
     // Utils
     Procedure SaveDataToFile(const Data, FilePath: string);
@@ -90,7 +93,8 @@ Implementation
 {$R *.dfm}
 
 Uses
-  System.IOUtils, System.Threading, System.NetEncoding, WinInet, System.JSON;
+  System.IOUtils, System.Threading, System.NetEncoding, WinInet, System.JSON
+  , System.Net.Mime;
 
 Function TFormMain.PostToVirusTotal(Const URL, APIKey: String): String;
 Var
@@ -141,13 +145,60 @@ begin
 end;
 
 procedure TFormMain.BtnUploadClick(Sender: TObject);
+var
+  Client: TNetHTTPClient;
+  Request: TNetHTTPRequest;
+  Response: IHTTPResponse;
+  MultiPartFormData: TMultipartFormData;
 begin
   if OpenDialogFile.Execute then
   begin
-    SelectedFileName := OpenDialogFile.FileName;
+    OpenDialogFile.FileName;
 
     EditSelectedFileDetails.Text := 'File ID: [00x0]   -   File Path: ['
-      + SelectedFileName + ']';
+      + OpenDialogFile.FileName + ']';
+
+    Client := TNetHTTPClient.Create(nil);
+    Request := TNetHTTPRequest.Create(nil);
+    try
+      Request.Client := Client;
+      Request.URL := 'https://www.virustotal.com/api/v3/files';
+
+      // Create the multipart form data
+      MultiPartFormData := TMultipartFormData.Create;
+      try
+        // Add the file to be sent, replace 'file.png' with the actual file path
+        MultiPartFormData.AddFile('file', OpenDialogFile.FileName);
+
+        // Set necessary headers
+        Request.CustomHeaders['accept'] := 'application/json';
+        Request.CustomHeaders['x-apikey'] := VT_API_KEY;
+
+        // Send the POST request
+        Response := Request.Post(Request.URL, MultiPartFormData);
+
+        var JSONValue := TJSONObject.ParseJSONValue(Response.ContentAsString);
+        try
+          if JSONValue is TJSONObject then
+          begin
+            var JSONObject := JSONValue as TJSONObject;
+            var DataObject := JSONObject.GetValue('data') as TJSONObject;
+            var AnalysisID := DataObject.GetValue('id').Value;
+            MemoFileScanLog.Lines.Append('Report: ' + OpenDialogFile.FileName
+              + ' is under ' + AnalysisID);
+
+            GetFileReport(AnalysisID);
+          end;
+        finally
+          JSONValue.Free;
+        end;
+      finally
+        MultiPartFormData.Free;
+      end;
+    finally
+      Request.Free;
+      Client.Free;
+    end;
   end;
 end;
 
@@ -198,7 +249,8 @@ procedure TFormMain.BtnGetFileReportByIdClick(Sender: TObject);
 begin
   if SelectedFileName = '' then
   begin
-    ShowMessage('Please, select a file!')
+    ShowMessage('Please, select a file!');
+
   end
   else
   begin
@@ -290,6 +342,34 @@ Begin
   end;
 
 End;
+
+function TFormMain.GetFileReport(const FileID: string): string;
+var
+  Client: TNetHTTPClient;
+  Request: TNetHTTPRequest;
+  Response: IHTTPResponse;
+begin
+  Client := TNetHTTPClient.Create(nil);
+  Request := TNetHTTPRequest.Create(nil);
+  try
+    Request.Client := Client;
+    Request.URL := 'https://www.virustotal.com/api/v3/analyses/' + FileID;
+
+    // Set necessary headers
+    Request.CustomHeaders['accept'] := 'application/json';
+    Request.CustomHeaders['x-apikey'] := VT_API_KEY;
+
+    // Send the GET request
+    Response := Request.Get(Request.URL);
+
+    // Output the response
+    MemoFileScanLog.Lines.Append('Analysis Report Details:-> '
+      + Response.ContentAsString);
+  finally
+    Request.Free;
+    Client.Free;
+  end;
+end;
 
 Function TFormMain.GetVirusTotalAnalysis(Const AnalysisID: String): String;
 Var
