@@ -47,6 +47,8 @@ Type
     ToggleSwitchRegistryChanges: TToggleSwitch;
     NetHTTPReqUploadToScan: TNetHTTPRequest;
     NetHTTPClientUploadToScan: TNetHTTPClient;
+    ProgressBarFileUpload: TProgressBar;
+    TimerFileAnalysis: TTimer;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
@@ -54,9 +56,11 @@ Type
     procedure ToggleSwitchNetworkActivityClick(Sender: TObject);
     procedure BtnUploadClick(Sender: TObject);
     procedure BtnGetFileReportByIdClick(Sender: TObject);
+    procedure TimerFileAnalysisTimer(Sender: TObject);
   Private
     VT_API_KEY: String;
-    SelectedFileName: String;
+    FSelectedFileName: String;
+    FAnalysis_ID: String;
     // WebShield Functions
     Function PostToVirusTotal(Const URL, APIKey: String): String;
     Function GetVirusTotalAnalysis(Const AnalysisID: String): String;
@@ -158,6 +162,8 @@ begin
     EditSelectedFileDetails.Text := 'File ID: [00x0]   -   File Path: ['
       + OpenDialogFile.FileName + ']';
 
+    ProgressBarFileUpload.Position := 0;
+
     Client := TNetHTTPClient.Create(nil);
     Request := TNetHTTPRequest.Create(nil);
     try
@@ -187,7 +193,8 @@ begin
             MemoFileScanLog.Lines.Append('Report: ' + OpenDialogFile.FileName
               + ' is under ' + AnalysisID);
 
-            GetFileReport(AnalysisID);
+            FAnalysis_ID := AnalysisID;
+            TimerFileAnalysis.Enabled := True;
           end;
         finally
           JSONValue.Free;
@@ -247,7 +254,7 @@ End;
 
 procedure TFormMain.BtnGetFileReportByIdClick(Sender: TObject);
 begin
-  if SelectedFileName = '' then
+  if FSelectedFileName = '' then
   begin
     ShowMessage('Please, select a file!');
 
@@ -359,6 +366,8 @@ begin
     Request.CustomHeaders['accept'] := 'application/json';
     Request.CustomHeaders['x-apikey'] := VT_API_KEY;
 
+    ShowMessage(Request.URL);
+
     // Send the GET request
     Response := Request.Get(Request.URL);
 
@@ -382,19 +391,35 @@ Begin
   Try
     NetHTTPRequest.Client := NetHTTPClient;
     // Adjust the URL to include the AnalysisID
-    NetHTTPRequest.URL := 'https://www.virustotal.com/api/v3/analyses/' + AnalysisID;
-
+    NetHTTPRequest.URL := 'https://www.virustotal.com/api/v3/analyses/'
+                            + AnalysisID;
     // Set request headers
     NetHTTPRequest.CustomHeaders['x-apikey'] := VT_API_KEY;
 
     // Since it's a GET request, we don't send FormData
     Response := NetHTTPRequest.Get(NetHTTPRequest.URL);
+
+
+
     Result := Response.ContentAsString();
   Finally
     NetHTTPClient.Free;
     NetHTTPRequest.Free;
   End;
 End;
+
+procedure TFormMain.TimerFileAnalysisTimer(Sender: TObject);
+begin
+  ProgressBarFileUpload.Position := ProgressBarFileUpload.Position + 1;
+
+  if ProgressBarFileUpload.Position >= ProgressBarFileUpload.Max then
+  begin
+    TimerFileAnalysis.Enabled := False;
+
+    // get the analysis report
+    GetFileReport(FAnalysis_ID);
+  end;
+end;
 
 Procedure TFormMain.TimerNetworkActivityTimer(Sender: TObject);
 Var

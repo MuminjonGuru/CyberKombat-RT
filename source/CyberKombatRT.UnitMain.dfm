@@ -297,6 +297,15 @@ object FormMain: TFormMain
         TabOrder = 7
         Text = 'File ID: [00x0]   -   File Path: [...]'
       end
+      object ProgressBarFileUpload: TProgressBar
+        Left = 20
+        Top = 539
+        Width = 980
+        Height = 20
+        Max = 10
+        Step = 1
+        TabOrder = 8
+      end
     end
   end
   object PythonEngineNetworkActivity: TPythonEngine
@@ -354,5 +363,11 @@ object FormMain: TFormMain
     UserAgent = 'Embarcadero URI Client/1.0'
     Left = 464
     Top = 498
+  end
+  object TimerFileAnalysis: TTimer
+    Enabled = False
+    OnTimer = TimerFileAnalysisTimer
+    Left = 816
+    Top = 464
   end
 end
