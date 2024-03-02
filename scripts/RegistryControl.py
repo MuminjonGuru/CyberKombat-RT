@@ -3,7 +3,39 @@ import time
 
 #  registry locations to monitor based on common malware persistence mechanisms
 REGISTRY_LOCATIONS = {
-
+    "Autostart": [
+        (winreg.HKEY_LOCAL_MACHINE, r"Software\Microsoft\Windows\CurrentVersion\Run"),
+        (winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run"),
+        (winreg.HKEY_LOCAL_MACHINE, r"Software\Microsoft\Windows\CurrentVersion\RunOnce"),
+        (winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\RunOnce"),
+        (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"),
+        (winreg.HKEY_CURRENT_USER, r"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"),
+    ],
+    "Services": [
+        (winreg.HKEY_LOCAL_MACHINE, r"System\CurrentControlSet\Services"),
+    ],
+    "DLL Hijacking": [
+        (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows", "AppInit_DLLs"),
+    ],
+    "Shell Extensions": [
+        (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved"),
+    ],
+    "Scheduled Tasks": [
+        (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree"),
+    ],
+    "Browser Hijacking": [
+        # Assuming Internet Explorer examples; add paths for other browsers as needed
+        (winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Internet Explorer\Main", "Start Page"),
+        (winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Internet Explorer\SearchScopes"),
+    ],
+    "Office Security": [
+        # Varies by Office version; this is an example for Office 2016
+        (winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Office\16.0\Word\Security"),
+    ],
+    "Security Software": [
+        # Example path; adjust based on installed security solutions
+        (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows Defender"),
+    ],
 }
 
 # list of suspicious patterns 
