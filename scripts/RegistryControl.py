@@ -76,7 +76,7 @@ def monitor_registry():
     while True:
         for category, locations in REGISTRY_LOCATIONS.items():
             print(f"Checking {category} registry entries...")
-            for hive, path, value in locations:
+            for hive, path, *value in locations:
                 check_suspicious_entries(hive, path, value[0] if value else None)``
         # print("Sleeping for 10 seconds...")
         time.sleep(10)
