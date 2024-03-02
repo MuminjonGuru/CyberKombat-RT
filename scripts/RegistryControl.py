@@ -53,28 +53,31 @@ def check_suspicious_entries(hive, path, value_name=None):
                         if pattern in data:
                             print(f"Suspicious registry value: {path}\\{value_name} = {value}")
                 except FileNotFoundError:
-                    pass  # Value not found; ignore
-            else:  # No specific value provided, check all values in the key
+                    pass  # ignore
+            else:  # check all values in the key
                 i = 0
                 while True:
                     try:
                         name, value, _ = winreg.EnumValue(registry_key, i)
-                        data = str(value).lower()  # Convert data to lowercase string for comparison
+                        data = str(value).lower()  #  data to lowercase string for comparison
                         for pattern in SUSPICIOUS_PATTERNS:
                             if pattern in data:
                                 print(f"Suspicious registry entry: {path}\\{name} = {value}")
                         i += 1
                     except OSError:
-                        break  # No more values to enumerate
+                        break  # stop when no more values to enumerate
     except PermissionError:
         print(f"Permission denied accessing {path}")
     except FileNotFoundError:
-        pass  # Path does not exist; ignore
+        pass  # Path does not exist
 
 #  continuously monitor the registry
 def monitor_registry():
     while True:
-        
+        for category, locations in REGISTRY_LOCATIONS.items():
+            print(f"Checking {category} registry entries...")
+            for hive, path, value in locations:
+                check_suspicious_entries(hive, path, value[0] if value else None)``
         # print("Sleeping for 10 seconds...")
         time.sleep(10)
 
