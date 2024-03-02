@@ -39,13 +39,33 @@ REGISTRY_LOCATIONS = {
 }
 
 # list of suspicious patterns 
-
+SUSPICIOUS_PATTERNS = ["", ""]
 
 # Function to check for suspicious registry entries
 def check_suspicious_entries(hive, path, value_name=None):
     try:
         with winreg.OpenKey(hive, path, access=winreg.KEY_READ) as registry_key:
-            pass
+            if value_name:  # check given value
+                try:
+                    value, _ = winreg.QueryValueEx(registry_key, value_name)
+                    data = str(value).lower()  # data to lowercase string for comparison
+                    for pattern in SUSPICIOUS_PATTERNS:
+                        if pattern in data:
+                            print(f"Suspicious registry value: {path}\\{value_name} = {value}")
+                except FileNotFoundError:
+                    pass  # Value not found; ignore
+            else:  # No specific value provided, check all values in the key
+                i = 0
+                while True:
+                    try:
+                        name, value, _ = winreg.EnumValue(registry_key, i)
+                        data = str(value).lower()  # Convert data to lowercase string for comparison
+                        for pattern in SUSPICIOUS_PATTERNS:
+                            if pattern in data:
+                                print(f"Suspicious registry entry: {path}\\{name} = {value}")
+                        i += 1
+                    except OSError:
+                        break  # No more values to enumerate
     except PermissionError:
         print(f"Permission denied accessing {path}")
     except FileNotFoundError:
