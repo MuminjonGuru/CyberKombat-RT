@@ -95,7 +95,24 @@ def check_registry_changes(previous_state, current_state):
         if key not in previous_state or previous_state[key] != current_state[key]:
             print(f"Change detected in registry key: {key}")
             print(f"Old value: {previous_state.get(key, 'N/A')}")
-            print(f"New value: {current_state[key]}")        
+            print(f"New value: {current_state[key]}")
+
+def snapshot_registry(hive, path):
+    # Take a snapshot of registry keys and values
+    snapshot = {}
+    try:
+        with winreg.OpenKey(hive, path, access=winreg.KEY_READ) as regkey:
+            i = 0
+            while True:
+                try:
+                    name, value, _ = winreg.EnumValue(regkey, i)
+                    snapshot[name] = value
+                    i += 1
+                except EnvironmentError:  # Ends when there are no more values
+                    break
+    except EnvironmentError as e:
+        print(f"Error accessing {path}: {e}")
+    return snapshot                    
 
 # Function to monitor registry continuously
 def monitor_registry():
