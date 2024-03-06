@@ -116,15 +116,32 @@ def snapshot_registry(hive, path):
 
 # Function to monitor registry continuously
 def monitor_registry():
+    # Initialize the previous state dictionary to hold snapshots of registry keys
+    previous_states = {}
+
     while True:
         for category, paths in REGISTRY_LOCATIONS.items():
             print(f"Checking {category}...")
+
             for entry in paths:
                 hive, path = entry[:2]  # Ensure only two items are unpacked
                 value_name = entry[2] if len(entry) > 2 else None  # Handles optional value name
+
+                # Take a snapshot of the current state of the registry key
+                current_state = snapshot_registry(hive, path)
+
+                # If we have a previous state, compare it to the current state
+                if (hive, path) in previous_states:
+                    check_registry_changes(previous_states[(hive, path)], current_state)
+
+                # Update the previous_states dictionary with the current state for future comparison
+                previous_states[(hive, path)] = current_state
+
+                # Check for suspicious entries based on patterns (original functionality)
                 check_suspicious_entries(hive, path, value_name)
-        print("Sleeping for 60 seconds...\n")
-        time.sleep(60)  # Sleep time between scans, adjust as needed
+
+        print("Sleeping for 30 seconds...\n")
+        time.sleep(30)  # sleep between scans
 
 if __name__ == "__main__":
     monitor_registry()
