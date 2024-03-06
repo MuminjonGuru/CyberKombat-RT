@@ -89,6 +89,14 @@ def check_suspicious_entries(hive, path, value_name=None):
     except EnvironmentError as e:  # For handling other permissions and errors
         print(f"Error accessing {path}: {e}")
 
+def check_registry_changes(previous_state, current_state):
+    # Compare previous and current states of registry keys
+    for key in current_state:
+        if key not in previous_state or previous_state[key] != current_state[key]:
+            print(f"Change detected in registry key: {key}")
+            print(f"Old value: {previous_state.get(key, 'N/A')}")
+            print(f"New value: {current_state[key]}")        
+
 # Function to monitor registry continuously
 def monitor_registry():
     while True:
