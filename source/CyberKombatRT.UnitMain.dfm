@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = WebShield
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -88,11 +88,18 @@ object FormMain: TFormMain
         Font.Style = []
         ParentFont = False
       end
+      object LblPDFAnalyzer: TLabel
+        Left = 38
+        Top = 411
+        Width = 104
+        Height = 25
+        Caption = 'PDF Analyzer'
+      end
       object MemoRegistryChanges: TMemo
         Left = 4
-        Top = 88
+        Top = 72
         Width = 500
-        Height = 401
+        Height = 330
         BevelInner = bvSpace
         BevelKind = bkSoft
         DragCursor = crHandPoint
@@ -109,9 +116,9 @@ object FormMain: TFormMain
       end
       object MemoFileActivity: TMemo
         Left = 529
-        Top = 88
+        Top = 72
         Width = 500
-        Height = 401
+        Height = 330
         BevelInner = bvSpace
         BevelKind = bkSoft
         DragCursor = crHandPoint
@@ -141,6 +148,50 @@ object FormMain: TFormMain
         Height = 27
         State = tssOn
         TabOrder = 3
+      end
+      object Memo1: TMemo
+        Left = 3
+        Top = 447
+        Width = 1026
+        Height = 150
+        BevelInner = bvSpace
+        BevelKind = bkSoft
+        DragCursor = crHandPoint
+        EditMargins.Left = 1
+        EditMargins.Right = 1
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Consolas'
+        Font.Style = []
+        ParentFont = False
+        ScrollBars = ssVertical
+        TabOrder = 4
+      end
+      object EditPDFPath: TEdit
+        Left = 180
+        Top = 408
+        Width = 612
+        Height = 33
+        ReadOnly = True
+        TabOrder = 5
+        Text = 'File ID: [00x0]   -   File Path: [...]'
+      end
+      object BtnAnalyzePDF: TButton
+        Left = 798
+        Top = 408
+        Width = 114
+        Height = 35
+        Caption = 'Analyze'
+        TabOrder = 6
+      end
+      object BtnPDFAction: TButton
+        Left = 918
+        Top = 408
+        Width = 111
+        Height = 35
+        Caption = 'Action'
+        TabOrder = 7
       end
     end
     object TabSheet3: TTabSheet

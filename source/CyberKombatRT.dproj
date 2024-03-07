@@ -134,7 +134,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="4">
-                <DeployFile LocalName="Win32\Debug\CyberKombatRT.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="..\CyberKombatRT.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>CyberKombatRT.exe</RemoteName>
                         <Overwrite>true</Overwrite>

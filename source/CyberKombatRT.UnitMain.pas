@@ -49,6 +49,11 @@ Type
     NetHTTPClientUploadToScan: TNetHTTPClient;
     ProgressBarFileUpload: TProgressBar;
     TimerFileAnalysis: TTimer;
+    LblPDFAnalyzer: TLabel;
+    Memo1: TMemo;
+    EditPDFPath: TEdit;
+    BtnAnalyzePDF: TButton;
+    BtnPDFAction: TButton;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
