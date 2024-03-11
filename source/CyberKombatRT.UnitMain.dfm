@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet2
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -138,16 +138,16 @@ object FormMain: TFormMain
         Top = 39
         Width = 82
         Height = 27
-        State = tssOn
         TabOrder = 2
+        OnClick = ToggleSwitchFileActivityClick
       end
       object ToggleSwitchRegistryChanges: TToggleSwitch
         Left = 422
         Top = 39
         Width = 82
         Height = 27
-        State = tssOn
         TabOrder = 3
+        OnClick = ToggleSwitchRegistryChangesClick
       end
       object Memo1: TMemo
         Left = 3
@@ -238,7 +238,6 @@ object FormMain: TFormMain
         Top = 47
         Width = 82
         Height = 27
-        State = tssOn
         TabOrder = 1
         OnClick = ToggleSwitchNetworkActivityClick
       end
@@ -324,20 +323,11 @@ object FormMain: TFormMain
       object BtnUpload: TButton
         Left = 815
         Top = 344
-        Width = 114
+        Width = 185
         Height = 35
-        Caption = 'Upload'
+        Caption = 'Upload and Analyse'
         TabOrder = 5
         OnClick = BtnUploadClick
-      end
-      object BtnGetFileReportById: TButton
-        Left = 935
-        Top = 344
-        Width = 65
-        Height = 35
-        Caption = 'Get'
-        TabOrder = 6
-        OnClick = BtnGetFileReportByIdClick
       end
       object EditSelectedFileDetails: TEdit
         Left = 197
@@ -345,7 +335,7 @@ object FormMain: TFormMain
         Width = 612
         Height = 33
         ReadOnly = True
-        TabOrder = 7
+        TabOrder = 6
         Text = 'File ID: [00x0]   -   File Path: [...]'
       end
       object ProgressBarFileUpload: TProgressBar
@@ -355,7 +345,7 @@ object FormMain: TFormMain
         Height = 20
         Max = 10
         Step = 1
-        TabOrder = 8
+        TabOrder = 7
       end
     end
   end
@@ -372,6 +362,7 @@ object FormMain: TFormMain
     Top = 380
   end
   object TimerNetworkActivity: TTimer
+    Enabled = False
     Interval = 20000
     OnTimer = TimerNetworkActivityTimer
     Left = 160
@@ -380,21 +371,19 @@ object FormMain: TFormMain
   object PythonGUIInputOutputRegistry: TPythonGUIInputOutput
     UnicodeIO = True
     RawOutput = False
+    Output = MemoRegistryChanges
     Left = 112
     Top = 128
-  end
-  object TimerRegistryChanges: TTimer
-    Interval = 15000
-    Left = 112
-    Top = 192
   end
   object PythonGUIInputOutputFileActivity: TPythonGUIInputOutput
     UnicodeIO = True
     RawOutput = False
+    Output = MemoFileActivity
     Left = 560
     Top = 136
   end
   object TimerFileActivity: TTimer
+    Enabled = False
     Left = 560
     Top = 200
   end
@@ -420,5 +409,12 @@ object FormMain: TFormMain
     OnTimer = TimerFileAnalysisTimer
     Left = 816
     Top = 464
+  end
+  object TimerRegistryLogReader: TTimer
+    Enabled = False
+    Interval = 1500
+    OnTimer = TimerRegistryLogReaderTimer
+    Left = 120
+    Top = 208
   end
 end

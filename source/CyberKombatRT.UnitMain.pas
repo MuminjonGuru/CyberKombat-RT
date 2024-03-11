@@ -33,13 +33,11 @@ Type
     LblRegistryChanges: TLabel;
     Label1: TLabel;
     MemoFileActivity: TMemo;
-    TimerRegistryChanges: TTimer;
     PythonGUIInputOutputFileActivity: TPythonGUIInputOutput;
     TimerFileActivity: TTimer;
     MemoFileScanLog: TMemo;
     Label2: TLabel;
     BtnUpload: TButton;
-    BtnGetFileReportById: TButton;
     EditSelectedFileDetails: TEdit;
     OpenDialogFile: TOpenDialog;
     ToggleSwitchNetworkActivity: TToggleSwitch;
@@ -54,17 +52,19 @@ Type
     EditPDFPath: TEdit;
     BtnAnalyzePDF: TButton;
     BtnPDFAction: TButton;
+    TimerRegistryLogReader: TTimer;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
     Procedure BtnScanURLogClick(Sender: TObject);
     procedure ToggleSwitchNetworkActivityClick(Sender: TObject);
     procedure BtnUploadClick(Sender: TObject);
-    procedure BtnGetFileReportByIdClick(Sender: TObject);
     procedure TimerFileAnalysisTimer(Sender: TObject);
+    procedure ToggleSwitchRegistryChangesClick(Sender: TObject);
+    procedure ToggleSwitchFileActivityClick(Sender: TObject);
+    procedure TimerRegistryLogReaderTimer(Sender: TObject);
   Private
     VT_API_KEY: String;
-    FSelectedFileName: String;
     FAnalysis_ID: String;
     // WebShield Functions
     Function PostToVirusTotal(Const URL, APIKey: String): String;
@@ -257,19 +257,6 @@ Begin
   End;
 End;
 
-procedure TFormMain.BtnGetFileReportByIdClick(Sender: TObject);
-begin
-  if FSelectedFileName = '' then
-  begin
-    ShowMessage('Please, select a file!');
-
-  end
-  else
-  begin
-    // get the report by ID
-  end;
-end;
-
 Procedure TFormMain.BtnScanURLogClick(Sender: TObject);
 Begin
   // capture to a file  - Will be moved to OnCreate function probably
@@ -446,6 +433,16 @@ Begin
   End;
 End;
 
+procedure TFormMain.TimerRegistryLogReaderTimer(Sender: TObject);
+begin
+  // load the log file here on the Tmemo
+end;
+
+procedure TFormMain.ToggleSwitchFileActivityClick(Sender: TObject);
+begin
+  //
+end;
+
 procedure TFormMain.ToggleSwitchNetworkActivityClick(Sender: TObject);
 begin
   if ToggleSwitchNetworkActivity.State = tssOff then
@@ -455,6 +452,18 @@ begin
   else if ToggleSwitchNetworkActivity.State = tssOn then
   begin
     TimerNetworkActivity.Enabled := True;
+  end;
+end;
+
+procedure TFormMain.ToggleSwitchRegistryChangesClick(Sender: TObject);
+begin
+  if ToggleSwitchRegistryChanges.State = tssOff then
+  begin
+    TimerRegistryLogReader.Enabled := False;
+  end
+  else if ToggleSwitchRegistryChanges.State = tssOn then
+  begin
+    TimerRegistryLogReader.Enabled := True;
   end;
 end;
 

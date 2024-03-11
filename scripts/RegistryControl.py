@@ -1,6 +1,14 @@
 import winreg
 import re
 import time
+import os
+
+# Set the folder path for the log file
+folderPath = os.path.join(os.environ["USERPROFILE"], "Documents", "CyberKombatData")
+# Ensure the directory exists
+os.makedirs(folderPath, exist_ok=True)
+# Set the path for the log file
+logFilePath = os.path.join(folderPath, "registry_log.dat")
 
 # Define suspicious patterns
 SUSPICIOUS_PATTERNS = [
@@ -94,6 +102,12 @@ REGISTRY_LOCATIONS = {
     ],
 }
 
+# Function to write to both file and stdout
+def log_output(message, end='\n'):
+    with open(logFilePath, 'a', encoding='utf-8') as f:
+        f.write(message + end)
+    print(message, end=end)
+
 # Helper functions
 def convert_data_to_string(value, type):
     if type in (winreg.REG_SZ, winreg.REG_EXPAND_SZ, winreg.REG_LINK):
@@ -107,9 +121,9 @@ def convert_data_to_string(value, type):
     return str(value).lower()
 
 def log_suspicious_entry(path, name, value, reason):
-    print(f"Suspicious entry detected: {path}\\{name}")
-    print(f"Value: {value}")
-    print(f"Reason: {reason}\n")
+    log_output(f"Suspicious entry detected: {path}\\{name}")
+    log_output(f"Value: {value}")
+    log_output(f"Reason: {reason}\n")
 
 def matches_pattern(value):
     for pattern in SUSPICIOUS_PATTERNS:
@@ -132,17 +146,17 @@ def check_suspicious_entries(hive, path, value_name=None):
                 except EnvironmentError:  # Ends when there are no more values
                     break
     except FileNotFoundError:  # Catching file not found error specifically
-        print(f"Registry path not found: {path}")
+        log_output(f"Registry path not found: {path}")
     except EnvironmentError as e:  # For handling other permissions and errors
-        print(f"Error accessing {path}: {e}")
+        log_output(f"Error accessing {path}: {e}")
 
 def check_registry_changes(previous_state, current_state):
     # Compare previous and current states of registry keys
     for key in current_state:
         if key not in previous_state or previous_state[key] != current_state[key]:
-            print(f"Change detected in registry key: {key}")
-            print(f"Old value: {previous_state.get(key, 'N/A')}")
-            print(f"New value: {current_state[key]}")
+            log_output(f"Change detected in registry key: {key}")
+            log_output(f"Old value: {previous_state.get(key, 'N/A')}")
+            log_output(f"New value: {current_state[key]}")
 
 def snapshot_registry(hive, path):
     # Take a snapshot of registry keys and values
@@ -166,29 +180,32 @@ def monitor_registry():
     # Initialize the previous state dictionary to hold snapshots of registry keys
     previous_states = {}
 
-    while True:
-        for category, paths in REGISTRY_LOCATIONS.items():
-            print(f"Checking {category}...")
+    try:
+        while True:
+            for category, paths in REGISTRY_LOCATIONS.items():
+                log_output(f"Checking {category}...")
 
-            for entry in paths:
-                hive, path = entry[:2]  # Ensure only two items are unpacked
-                value_name = entry[2] if len(entry) > 2 else None  # Handles optional value name
+                for entry in paths:
+                    hive, path = entry[:2]  # Ensure only two items are unpacked
+                    value_name = entry[2] if len(entry) > 2 else None  # Handles optional value name
 
-                # Take a snapshot of the current state of the registry key
-                current_state = snapshot_registry(hive, path)
+                    # Take a snapshot of the current state of the registry key
+                    current_state = snapshot_registry(hive, path)
 
-                # If we have a previous state, compare it to the current state
-                if (hive, path) in previous_states:
-                    check_registry_changes(previous_states[(hive, path)], current_state)
+                    # If we have a previous state, compare it to the current state
+                    if (hive, path) in previous_states:
+                        check_registry_changes(previous_states[(hive, path)], current_state)
 
-                # Update the previous_states dictionary with the current state for future comparison
-                previous_states[(hive, path)] = current_state
+                    # Update the previous_states dictionary with the current state for future comparison
+                    previous_states[(hive, path)] = current_state
 
-                # Check for suspicious entries based on patterns (original functionality)
-                check_suspicious_entries(hive, path, value_name)
+                    # Check for suspicious entries based on patterns (original functionality)
+                    check_suspicious_entries(hive, path, value_name)
 
-        print("Sleeping for 30 seconds...\n")
-        time.sleep(30)  # sleep between scans
+            log_output("Sleeping for 5 seconds...\n")
+            time.sleep(5)  # sleep between scans
+    except KeyboardInterrupt:
+        log_output("\nScript stopped by user. Exiting...")
 
 if __name__ == "__main__":
     monitor_registry()
