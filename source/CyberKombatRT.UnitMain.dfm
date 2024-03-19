@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet4
+    ActivePage = WebShield
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -351,8 +351,8 @@ object FormMain: TFormMain
   end
   object PythonEngineNetworkActivity: TPythonEngine
     IO = PythonGUIInputOutputNA
-    Left = 162
-    Top = 315
+    Left = 897
+    Top = 420
   end
   object PythonGUIInputOutputNA: TPythonGUIInputOutput
     UnicodeIO = True
@@ -389,26 +389,26 @@ object FormMain: TFormMain
   end
   object OpenDialogFile: TOpenDialog
     Title = 'Select a file to upload'
-    Left = 632
-    Top = 448
+    Left = 934
+    Top = 568
   end
   object NetHTTPReqUploadToScan: TNetHTTPRequest
     Asynchronous = True
     Client = NetHTTPClientUploadToScan
-    Left = 624
-    Top = 522
+    Left = 636
+    Top = 541
   end
   object NetHTTPClientUploadToScan: TNetHTTPClient
     Asynchronous = True
     UserAgent = 'Embarcadero URI Client/1.0'
-    Left = 464
-    Top = 498
+    Left = 636
+    Top = 607
   end
   object TimerFileAnalysis: TTimer
     Enabled = False
     OnTimer = TimerFileAnalysisTimer
-    Left = 816
-    Top = 464
+    Left = 932
+    Top = 500
   end
   object TimerRegistryLogReader: TTimer
     Enabled = False

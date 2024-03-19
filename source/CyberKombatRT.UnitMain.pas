@@ -363,9 +363,46 @@ begin
     // Send the GET request
     Response := Request.Get(Request.URL);
 
-    // Output the response
-    MemoFileScanLog.Lines.Append('Analysis Report Details:-> '
-      + Response.ContentAsString);
+    // Parse the JSON string to a JSON object
+    var LJSONObject := TJSONObject.ParseJSONValue(Response.ContentAsString) as TJSONObject;
+    try
+      // Navigate through the JSON structure to retrieve the desired values
+      // Get the 'data' object
+      var LData := LJSONObject.GetValue<TJSONObject>('data');
+
+      // Get the 'attributes' object
+      var LAttributes := LData.GetValue<TJSONObject>('attributes');
+
+      // Get the 'stats' object
+      var LStats := LAttributes.GetValue<TJSONObject>('stats');
+
+      // Extract 'malicious' and 'harmless' values
+      var LMalicious := LStats.GetValue<Integer>('malicious');
+      var LHarmless := LStats.GetValue<Integer>('harmless');
+
+
+      // Next iteration
+      // Get the 'meta' object
+      var LMeta := LJSONObject.GetValue<TJSONObject>('meta');
+
+      // Get the 'file_info' object
+      var LFileInfo := LMeta.GetValue<TJSONObject>('file_info');
+
+      // Extract 'sha256', 'md5', and 'size'
+      var LSHA256 := LFileInfo.GetValue<string>('sha256');
+      var LMD5 := LFileInfo.GetValue<string>('md5');
+      var LSize := LFileInfo.GetValue<Integer>('size');
+
+      // Output the extracted values (you can replace this with your own logic)
+      MemoFileScanLog.Lines.Append('Maliciuos Level: ' + LMalicious.ToString);
+      MemoFileScanLog.Lines.Append('Harmless: ' + LHarmless.ToString);
+      MemoFileScanLog.Lines.Append('SHA256: ' + LSHA256);
+      MemoFileScanLog.Lines.Append('MD5 : ' + LMD5);
+      MemoFileScanLog.Lines.Append('Size : ' + LSize.ToString);
+    finally
+      LJSONObject.Free;
+    end;
+
   finally
     Request.Free;
     Client.Free;
