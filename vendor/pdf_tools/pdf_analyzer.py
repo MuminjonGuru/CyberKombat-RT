@@ -1,16 +1,34 @@
 import os
 import subprocess
 
+def check_pdf_for_warnings(result_stdout):
+    warnings = []
+    criteria = {
+        'JavaScript': 'contains JavaScript',
+        'EmbeddedFile': 'contains an embedded file',
+        '/AA': 'contains additional actions',
+        '/OpenAction': 'has an open action',
+        '/AcroForm': 'contains AcroForms',
+        '/RichMedia': 'contains RichMedia',
+        '/Launch': 'contains launch actions',
+        '/Encrypt': 'is encrypted'
+    }
+    for key, message in criteria.items():
+        if key in result_stdout:
+            warnings.append(message)
+    return warnings
+
 def scan_pdf(directory):
     for root, dirs, files in os.walk(directory):
         for file in files:
             if file.lower().endswith('.pdf'):
                 full_path = os.path.join(root, file)
                 try:
-                    # Call pdfid.py script here
                     result = subprocess.run(['python', 'pdfid.py', full_path], capture_output=True, text=True, timeout=30)
-                    if 'JavaScript' in result.stdout or 'EmbeddedFile' in result.stdout:
-                        print(f"WARNING: The file {full_path} contains JavaScript or an embedded file.")
+                    warnings = check_pdf_for_warnings(result.stdout)
+                    if warnings:
+                        warning_messages = ', '.join(warnings)
+                        print(f"WARNING: The file {full_path} {warning_messages}.")
                 except subprocess.TimeoutExpired:
                     print(f"ERROR: Scanning of {full_path} took too long and was terminated.")
                 except subprocess.CalledProcessError as e:
