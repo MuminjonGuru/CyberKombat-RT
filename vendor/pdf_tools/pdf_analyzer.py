@@ -1,6 +1,17 @@
 import os
 import subprocess
 
+def evaluate_threat_level(warnings):
+    # High threat level if the PDF contains embedded files or certain dangerous combinations
+    if 'contains an embedded file' in warnings:
+        return 'HIGH THREAT', warnings
+    # Moderate threat level if the PDF contains JavaScript but no embedded files
+    elif 'contains JavaScript' in warnings:
+        return 'MODERATE THREAT', warnings
+    # Low threat level for other conditions
+    else:
+        return 'LOW THREAT', warnings
+
 def check_pdf_for_warnings(result_stdout):
     warnings = []
     criteria = {
@@ -33,8 +44,9 @@ def scan_pdf(directory):
                     result = subprocess.run(['python', 'pdfid.py', full_path], capture_output=True, text=True, timeout=30)
                     warnings = check_pdf_for_warnings(result.stdout)
                     if warnings:
-                        warning_messages = ', '.join(warnings)
-                        print(f"WARNING: The file {full_path} {warning_messages}.")
+                        threat_level, detailed_warnings = evaluate_threat_level(warnings)
+                        warning_messages = ', '.join(detailed_warnings)
+                        print(f"{threat_level}: The file {full_path} {warning_messages}.")
                 except subprocess.TimeoutExpired:
                     print(f"ERROR: Scanning of {full_path} took too long and was terminated.")
                 except subprocess.CalledProcessError as e:
