@@ -14,15 +14,17 @@ def evaluate_threat_level(warnings):
 
 def check_pdf_for_warnings(result_stdout):
     warnings = []
+    # Print output for debugging
+    print("Debug - pdfid.py output:", result_stdout)
     criteria = {
-        'JavaScript': 'contains JavaScript',
-        'EmbeddedFile': 'contains an embedded file',
-        '/AA': 'contains additional actions',
-        '/OpenAction': 'has an open action',
-        '/AcroForm': 'contains AcroForms',
-        '/RichMedia': 'contains RichMedia',
-        '/Launch': 'contains launch actions',
-        '/Encrypt': 'is encrypted'
+        ' JavaScript ': 'contains JavaScript',  # Space around to prevent partial matches
+        ' EmbeddedFile ': 'contains an embedded file',
+        ' /AA ': 'contains additional actions',
+        ' /OpenAction ': 'has an open action',
+        ' /AcroForm ': 'contains AcroForms',
+        ' /RichMedia ': 'contains RichMedia',
+        ' /Launch ': 'contains launch actions',
+        ' /Encrypt ': 'is encrypted'
     }
     for key, message in criteria.items():
         if key in result_stdout:
