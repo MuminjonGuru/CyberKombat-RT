@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet2
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -190,10 +190,6 @@ object FormMain: TFormMain
         Caption = 'Action'
         TabOrder = 6
       end
-    end
-    object TabSheet3: TTabSheet
-      Caption = 'ClamAV'
-      ImageIndex = 2
     end
     object TabSheet4: TTabSheet
       Caption = 'Network Manager'

@@ -16,7 +16,6 @@ Type
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
-    TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
     MemoNetworkActivity: TMemo;
     LblNetworkActivity: TLabel;
