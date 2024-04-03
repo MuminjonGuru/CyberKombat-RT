@@ -48,11 +48,11 @@ Type
     ProgressBarFileUpload: TProgressBar;
     TimerFileAnalysis: TTimer;
     LblPDFAnalyzer: TLabel;
-    Memo1: TMemo;
-    EditPDFPath: TEdit;
+    MemoPDFAnalyzer: TMemo;
     BtnAnalyzePDF: TButton;
     BtnPDFAction: TButton;
     TimerRegistryLogReader: TTimer;
+    PythonGUIInputOutputPDFAnalyzer: TPythonGUIInputOutput;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);

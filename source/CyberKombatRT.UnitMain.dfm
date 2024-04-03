@@ -28,7 +28,7 @@ object FormMain: TFormMain
   Font.Style = []
   GlassFrame.Enabled = True
   GlassFrame.Top = 38
-  Position = poDesktopCenter
+  Position = poScreenCenter
   StyleElements = [seFont, seClient]
   OnCreate = FormCreate
   TextHeight = 25
@@ -89,11 +89,17 @@ object FormMain: TFormMain
         ParentFont = False
       end
       object LblPDFAnalyzer: TLabel
-        Left = 38
-        Top = 411
-        Width = 104
-        Height = 25
-        Caption = 'PDF Analyzer'
+        Left = 3
+        Top = 410
+        Width = 370
+        Height = 23
+        Caption = 'PDF Analyzer - Please give a directory to analyze'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
       end
       object MemoRegistryChanges: TMemo
         Left = 4
@@ -149,7 +155,7 @@ object FormMain: TFormMain
         TabOrder = 3
         OnClick = ToggleSwitchRegistryChangesClick
       end
-      object Memo1: TMemo
+      object MemoPDFAnalyzer: TMemo
         Left = 3
         Top = 447
         Width = 1026
@@ -168,30 +174,21 @@ object FormMain: TFormMain
         ScrollBars = ssVertical
         TabOrder = 4
       end
-      object EditPDFPath: TEdit
-        Left = 180
-        Top = 408
-        Width = 612
-        Height = 33
-        ReadOnly = True
-        TabOrder = 5
-        Text = 'File ID: [00x0]   -   File Path: [...]'
-      end
       object BtnAnalyzePDF: TButton
-        Left = 798
+        Left = 390
         Top = 408
         Width = 114
         Height = 35
         Caption = 'Analyze'
-        TabOrder = 6
+        TabOrder = 5
       end
       object BtnPDFAction: TButton
-        Left = 918
+        Left = 529
         Top = 408
         Width = 111
         Height = 35
         Caption = 'Action'
-        TabOrder = 7
+        TabOrder = 6
       end
     end
     object TabSheet3: TTabSheet
@@ -352,21 +349,21 @@ object FormMain: TFormMain
   object PythonEngineNetworkActivity: TPythonEngine
     IO = PythonGUIInputOutputNA
     Left = 897
-    Top = 420
+    Top = 356
   end
   object PythonGUIInputOutputNA: TPythonGUIInputOutput
     UnicodeIO = True
     RawOutput = False
     Output = MemoNetworkActivity
-    Left = 163
-    Top = 380
+    Left = 155
+    Top = 356
   end
   object TimerNetworkActivity: TTimer
     Enabled = False
     Interval = 20000
     OnTimer = TimerNetworkActivityTimer
-    Left = 160
-    Top = 444
+    Left = 344
+    Top = 364
   end
   object PythonGUIInputOutputRegistry: TPythonGUIInputOutput
     UnicodeIO = True
@@ -416,5 +413,12 @@ object FormMain: TFormMain
     OnTimer = TimerRegistryLogReaderTimer
     Left = 120
     Top = 208
+  end
+  object PythonGUIInputOutputPDFAnalyzer: TPythonGUIInputOutput
+    UnicodeIO = True
+    RawOutput = False
+    Output = MemoPDFAnalyzer
+    Left = 260
+    Top = 532
   end
 end
