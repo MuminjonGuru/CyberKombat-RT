@@ -1,3 +1,4 @@
+import csv
 import pyclamd
 
 def scan_directory(directory_path):
@@ -10,13 +11,27 @@ def scan_directory(directory_path):
 
         # Print the scan results
         if result:
-            print("Malware Found:")
+            print(f"Malware Found in {directory_path}:")
             for infected_file, virus_name in result.items():
                 print(f"{infected_file}: {virus_name}")
         else:
-            print("No malware found in the directory.")
+            print(f"No malware found in the directory {directory_path}.")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred while scanning {directory_path}: {e}")
 
+def read_directories_from_csv(file_path):
+    directories = []
+    with open(file_path, mode='r', newline='', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            # Assuming each row contains one directory path
+            if row:  # Check if the row is not empty
+                directories.append(row[0])
+    return directories
 
-scan_directory(r'C:\Users\user\Downloads\Documents')
+# Example usage
+csv_file_path = 'config/directories.csv'  # Update this path to your actual CSV file location
+directories_to_scan = read_directories_from_csv(csv_file_path)
+
+for directory in directories_to_scan:
+    scan_directory(directory)
