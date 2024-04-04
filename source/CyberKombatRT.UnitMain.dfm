@@ -53,11 +53,63 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
       Caption = 'Dashboard'
+      object MemoScanList: TMemo
+        Left = 16
+        Top = 367
+        Width = 841
+        Height = 150
+        BevelInner = bvNone
+        BevelOuter = bvRaised
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -17
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsItalic]
+        Lines.Strings = (
+          'C:/Users/Public/')
+        ParentFont = False
+        TabOrder = 0
+      end
+      object BtnUpdateDaemon: TButton
+        Left = 879
+        Top = 367
+        Width = 148
+        Height = 29
+        Caption = 'Update'
+        TabOrder = 1
+      end
+      object BtnScanDaemonStart: TButton
+        Left = 879
+        Top = 429
+        Width = 148
+        Height = 29
+        Caption = 'Scan'
+        Enabled = False
+        TabOrder = 2
+      end
+      object BtnScanReport: TButton
+        Left = 879
+        Top = 488
+        Width = 148
+        Height = 29
+        Caption = 'Report'
+        Enabled = False
+        TabOrder = 3
+      end
+      object PBScanGauge: TProgressBar
+        Left = 16
+        Top = 533
+        Width = 841
+        Height = 21
+        Min = 1
+        Position = 1
+        TabOrder = 4
+      end
     end
     object TabSheet2: TTabSheet
       Caption = 'File | Reg Manager'

@@ -11,7 +11,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Lavender Classico');
+  TStyleManager.TrySetStyle('Golden Graphite');
   Application.CreateForm(TFormMain, FormMain);
   Application.Run;
 end.

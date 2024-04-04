@@ -52,6 +52,11 @@ Type
     BtnPDFAction: TButton;
     TimerRegistryLogReader: TTimer;
     PythonGUIInputOutputPDFAnalyzer: TPythonGUIInputOutput;
+    MemoScanList: TMemo;
+    BtnUpdateDaemon: TButton;
+    BtnScanDaemonStart: TButton;
+    BtnScanReport: TButton;
+    PBScanGauge: TProgressBar;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
@@ -337,6 +342,15 @@ Begin
   else
   begin
     ShowMessage('Key accepted');
+  end;
+
+  try
+    var ConfigFolder := 'D:\CyberKombat RT\config';
+    var ConfigPath   := TPath.Combine(ConfigFolder, 'directories.csv');
+    MemoScanList.Lines.LoadFromFile(ConfigPath);
+  except
+    on E: Exception do
+      ShowMessage('Scan List Not Found or Empty. Error msg: ' + E.ToString);
   end;
 
 End;
