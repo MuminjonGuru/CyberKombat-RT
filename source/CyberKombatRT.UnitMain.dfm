@@ -61,13 +61,13 @@ object FormMain: TFormMain
       object MemoScanList: TMemo
         Left = 16
         Top = 367
-        Width = 841
+        Width = 400
         Height = 150
         BevelInner = bvNone
         BevelOuter = bvRaised
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -17
+        Font.Height = -15
         Font.Name = 'Segoe UI'
         Font.Style = [fsItalic]
         Lines.Strings = (
@@ -109,6 +109,25 @@ object FormMain: TFormMain
         Min = 1
         Position = 1
         TabOrder = 4
+      end
+      object MemoScanResult: TMemo
+        Left = 457
+        Top = 367
+        Width = 400
+        Height = 150
+        BevelInner = bvNone
+        BevelOuter = bvRaised
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -15
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsItalic]
+        Lines.Strings = (
+          '...'
+          '..'
+          '.')
+        ParentFont = False
+        TabOrder = 5
       end
     end
     object TabSheet2: TTabSheet
@@ -211,7 +230,7 @@ object FormMain: TFormMain
         Left = 3
         Top = 447
         Width = 1026
-        Height = 150
+        Height = 130
         BevelInner = bvSpace
         BevelKind = bkSoft
         DragCursor = crHandPoint
@@ -466,7 +485,12 @@ object FormMain: TFormMain
     UnicodeIO = True
     RawOutput = False
     Output = MemoPDFAnalyzer
-    Left = 260
-    Top = 532
+    Left = 316
+    Top = 476
+  end
+  object TimerDaemon: TTimer
+    Enabled = False
+    Left = 752
+    Top = 448
   end
 end

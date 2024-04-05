@@ -15,7 +15,8 @@ def scan_directory(directory_path):
             for infected_file, virus_name in result.items():
                 print(f"{infected_file}: {virus_name}")
         else:
-            print(f"No malware found in the directory {directory_path}.")
+            # Updated message for when no malware is found
+            print(f"GREAT. Everything is fine in {directory_path}. No malware detected.")
     except Exception as e:
         print(f"An error occurred while scanning {directory_path}: {e}")
 
@@ -24,7 +25,6 @@ def read_directories_from_csv(file_path):
     with open(file_path, mode='r', newline='', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
-            # Assuming each row contains one directory path
             if row:  # Check if the row is not empty
                 directories.append(row[0])
     return directories

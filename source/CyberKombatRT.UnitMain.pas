@@ -57,6 +57,8 @@ Type
     BtnScanDaemonStart: TButton;
     BtnScanReport: TButton;
     PBScanGauge: TProgressBar;
+    MemoScanResult: TMemo;
+    TimerDaemon: TTimer;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
