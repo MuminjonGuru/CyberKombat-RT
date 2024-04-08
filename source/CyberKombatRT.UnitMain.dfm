@@ -493,4 +493,11 @@ object FormMain: TFormMain
     Left = 752
     Top = 448
   end
+  object PythonGUIInputOutputScanResult: TPythonGUIInputOutput
+    UnicodeIO = True
+    RawOutput = False
+    Output = MemoScanResult
+    Left = 864
+    Top = 72
+  end
 end

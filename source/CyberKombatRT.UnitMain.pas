@@ -59,6 +59,7 @@ Type
     PBScanGauge: TProgressBar;
     MemoScanResult: TMemo;
     TimerDaemon: TTimer;
+    PythonGUIInputOutputScanResult: TPythonGUIInputOutput;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
