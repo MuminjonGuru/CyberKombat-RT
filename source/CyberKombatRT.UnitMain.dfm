@@ -129,6 +129,14 @@ object FormMain: TFormMain
         ParentFont = False
         TabOrder = 5
       end
+      object Panel2: TPanel
+        Left = 457
+        Top = 16
+        Width = 400
+        Height = 329
+        Caption = 'Panel1'
+        TabOrder = 6
+      end
     end
     object TabSheet2: TTabSheet
       Caption = 'File | Reg Manager'
@@ -412,6 +420,14 @@ object FormMain: TFormMain
         TabOrder = 7
       end
     end
+  end
+  object Panel1: TPanel
+    Left = 20
+    Top = 52
+    Width = 400
+    Height = 329
+    Caption = 'Panel1'
+    TabOrder = 2
   end
   object PythonEngineNetworkActivity: TPythonEngine
     IO = PythonGUIInputOutputNA

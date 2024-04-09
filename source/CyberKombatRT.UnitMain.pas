@@ -60,6 +60,8 @@ Type
     MemoScanResult: TMemo;
     TimerDaemon: TTimer;
     PythonGUIInputOutputScanResult: TPythonGUIInputOutput;
+    Panel1: TPanel;
+    Panel2: TPanel;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
