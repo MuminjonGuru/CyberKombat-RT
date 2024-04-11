@@ -1,18 +1,16 @@
 import os
 import subprocess
+from datetime import datetime
 
 def evaluate_threat_level(warnings):
-    # High threat level if the PDF contains embedded files or certain dangerous combinations
     if 'contains an embedded file' in warnings:
         return 'HIGH THREAT', warnings
-    # Moderate threat level if the PDF contains JavaScript but no embedded files
     elif 'contains JavaScript' in warnings:
         return 'MODERATE THREAT', warnings
-    # Low threat level for other conditions
     else:
         return 'LOW THREAT', warnings
 
-def check_pdf_for_warnings(result_stdout, full_path):
+def check_pdf_for_warnings(result_stdout, full_path, log_file):
     warnings = []
     criteria = {
         ' JavaScript ': 'contains JavaScript',
@@ -31,15 +29,13 @@ def check_pdf_for_warnings(result_stdout, full_path):
     if warnings:
         threat_level, detailed_warnings = evaluate_threat_level(warnings)
         warning_messages = ', '.join(detailed_warnings)
-        # Directly print the final message
-        final_message = f"{threat_level}: The file {full_path} {warning_messages}."
-        print(final_message)
-        return final_message  # This allows for potential future use beyond printing
-    return None  # Indicates no warnings were found or printed
+        final_message = f"{threat_level}: The file {full_path} {warning_messages}.\n"
+        log_file.write(final_message)  # Write the final message to the file
 
-processed_files = set()  # Set to store paths of processed files
-
-def scan_pdf(directory):
+def scan_pdf(directory, log_file):
+    start_message = f"Scanning... {datetime.now()}\n"
+    print(start_message.strip())  # Print to stdout for Python4Delphi to capture
+    # log_file.write(start_message)  # Also write to the log file
     for root, dirs, files in os.walk(directory):
         for file in files:
             if file.lower().endswith('.pdf'):
@@ -50,19 +46,26 @@ def scan_pdf(directory):
 
                 try:
                     result = subprocess.run(['python', 'pdfid.py', full_path], capture_output=True, text=True, timeout=30, creationflags=subprocess.CREATE_NO_WINDOW)
-                    # Now, check_pdf_for_warnings handles everything
-                    check_pdf_for_warnings(result.stdout, full_path)
+                    check_pdf_for_warnings(result.stdout, full_path, log_file)
                 except Exception as e:
-                    print(f"ERROR: An unexpected error occurred while scanning {full_path}: {str(e)}")
+                    error_message = f"ERROR: An unexpected error occurred while scanning {full_path}: {str(e)}\n"
+                    print(error_message.strip())  # Print errors to stdout
+                    # log_file.write(error_message)  # Also write errors to the file
+
+    complete_message = f"Scan complete. {datetime.now()}\n"
+    print(complete_message.strip())  # Print to stdout for Python4Delphi to capture
+    # log_file.write(complete_message)  # Also write to the log file
+
+processed_files = set()
 
 # Get the username from the environment variables
 user_name = os.getenv('USERNAME')
 
 # Main directories to scan
-directories = [
-    # f'C:\\Users\\{user_name}\\Downloads',
-    f'C:\\Users\\{user_name}\\Downloads\\Documents'
-]
+directories = [f'C:\\Users\\{user_name}\\Downloads\\Documents']
 
-for directory in directories:
-    scan_pdf(directory)
+if __name__ == '__main__':
+    log_file_path = 'D:\CyberKombat RT\logs\pdf_logs.txt'  # Define the path to the log file
+    with open(log_file_path, 'a') as log_file:  # Open the file in append mode
+        for directory in directories:
+            scan_pdf(directory, log_file)

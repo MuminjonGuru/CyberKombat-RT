@@ -8,7 +8,7 @@ Uses
   Vcl.ComCtrls, Vcl.ToolWin, Vcl.ActnMan, Vcl.ActnCtrls, Vcl.StdCtrls,
   PythonEngine, Vcl.PythonGUIInputOutput, Vcl.ExtCtrls, Vcl.Mask,
   System.Net.URLClient, System.Net.HttpClient, System.Net.HttpClientComponent,
-  Vcl.WinXCtrls;
+  Vcl.WinXCtrls, ShellAPI;
 
 Type
   TFormMain = Class(TForm)
@@ -51,7 +51,6 @@ Type
     BtnAnalyzePDF: TButton;
     BtnPDFAction: TButton;
     TimerRegistryLogReader: TTimer;
-    PythonGUIInputOutputPDFAnalyzer: TPythonGUIInputOutput;
     MemoScanList: TMemo;
     BtnUpdateDaemon: TButton;
     BtnScanDaemonStart: TButton;
@@ -73,6 +72,7 @@ Type
     procedure ToggleSwitchFileActivityClick(Sender: TObject);
     procedure TimerRegistryLogReaderTimer(Sender: TObject);
     procedure BtnAnalyzePDFClick(Sender: TObject);
+    procedure BtnPDFActionClick(Sender: TObject);
   Private
     VT_API_KEY: String;
     FAnalysis_ID: String;
@@ -271,22 +271,17 @@ procedure TFormMain.BtnAnalyzePDFClick(Sender: TObject);
 var
   ScriptFolder, ScriptPath: String;
 Begin
-  // Define the path to the script
+  MemoPDFAnalyzer.Lines.Clear;
+
   ScriptFolder := 'D:\CyberKombat RT\vendor\pdf_tools\';
   ScriptPath := TPath.Combine(ScriptFolder, 'pdf_analyzer.py');
+  ShellExecute(0, 'open', 'python', PChar(ScriptPath), nil, SW_HIDE);
+end;
 
-  PythonEngine.IO := PythonGUIInputOutputPDFAnalyzer;
-
-  // Check if the Python script file exists before attempting to run it
-  If TFile.Exists(ScriptPath) Then
-  Begin
-    // Create and start the script execution thread
-    TPythonScriptThread.Create(ScriptPath);
-  End
-  Else
-  Begin
-    WriteToLogFile('pdf_analyzer.py script not found or can`t access;');
-  End;
+procedure TFormMain.BtnPDFActionClick(Sender: TObject);
+begin
+  MemoPDFAnalyzer.Clear;
+  MemoPDFAnalyzer.Lines.LoadFromFile('D:\CyberKombat RT\logs\pdf_logs.txt');
 end;
 
 Procedure TFormMain.BtnScanURLogClick(Sender: TObject);

@@ -275,8 +275,9 @@ object FormMain: TFormMain
         Top = 408
         Width = 111
         Height = 35
-        Caption = 'Action'
+        Caption = 'Get Report'
         TabOrder = 6
+        OnClick = BtnPDFActionClick
       end
     end
     object TabSheet4: TTabSheet
@@ -498,13 +499,6 @@ object FormMain: TFormMain
     OnTimer = TimerRegistryLogReaderTimer
     Left = 120
     Top = 192
-  end
-  object PythonGUIInputOutputPDFAnalyzer: TPythonGUIInputOutput
-    UnicodeIO = True
-    RawOutput = False
-    Output = MemoPDFAnalyzer
-    Left = 116
-    Top = 532
   end
   object TimerDaemon: TTimer
     Enabled = False
