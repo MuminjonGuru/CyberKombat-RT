@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -137,6 +137,14 @@ object FormMain: TFormMain
         Caption = 'Panel1'
         TabOrder = 6
       end
+      object Panel1: TPanel
+        Left = 16
+        Top = 16
+        Width = 400
+        Height = 329
+        Caption = 'Panel1'
+        TabOrder = 7
+      end
     end
     object TabSheet2: TTabSheet
       Caption = 'File | Reg Manager'
@@ -184,7 +192,7 @@ object FormMain: TFormMain
         Left = 4
         Top = 72
         Width = 500
-        Height = 330
+        Height = 321
         BevelInner = bvSpace
         BevelKind = bkSoft
         DragCursor = crHandPoint
@@ -203,7 +211,7 @@ object FormMain: TFormMain
         Left = 529
         Top = 72
         Width = 500
-        Height = 330
+        Height = 321
         BevelInner = bvSpace
         BevelKind = bkSoft
         DragCursor = crHandPoint
@@ -236,9 +244,9 @@ object FormMain: TFormMain
       end
       object MemoPDFAnalyzer: TMemo
         Left = 3
-        Top = 447
+        Top = 449
         Width = 1026
-        Height = 130
+        Height = 120
         BevelInner = bvSpace
         BevelKind = bkSoft
         DragCursor = crHandPoint
@@ -260,6 +268,7 @@ object FormMain: TFormMain
         Height = 35
         Caption = 'Analyze'
         TabOrder = 5
+        OnClick = BtnAnalyzePDFClick
       end
       object BtnPDFAction: TButton
         Left = 529
@@ -421,99 +430,93 @@ object FormMain: TFormMain
       end
     end
   end
-  object Panel1: TPanel
-    Left = 20
-    Top = 52
-    Width = 400
-    Height = 329
-    Caption = 'Panel1'
-    TabOrder = 2
-  end
-  object PythonEngineNetworkActivity: TPythonEngine
+  object PythonEngine: TPythonEngine
     IO = PythonGUIInputOutputNA
-    Left = 897
-    Top = 356
+    Left = 681
+    Top = 124
   end
   object PythonGUIInputOutputNA: TPythonGUIInputOutput
+    DelayWrites = True
     UnicodeIO = True
     RawOutput = False
     Output = MemoNetworkActivity
-    Left = 155
-    Top = 356
+    Left = 123
+    Top = 308
   end
   object TimerNetworkActivity: TTimer
     Enabled = False
     Interval = 20000
     OnTimer = TimerNetworkActivityTimer
-    Left = 344
-    Top = 364
+    Left = 678
+    Top = 199
   end
   object PythonGUIInputOutputRegistry: TPythonGUIInputOutput
     UnicodeIO = True
     RawOutput = False
     Output = MemoRegistryChanges
-    Left = 112
+    Left = 120
     Top = 128
   end
   object PythonGUIInputOutputFileActivity: TPythonGUIInputOutput
     UnicodeIO = True
     RawOutput = False
     Output = MemoFileActivity
-    Left = 560
-    Top = 136
+    Left = 400
+    Top = 128
   end
   object TimerFileActivity: TTimer
     Enabled = False
-    Left = 560
-    Top = 200
+    Left = 400
+    Top = 192
   end
   object OpenDialogFile: TOpenDialog
     Title = 'Select a file to upload'
-    Left = 934
-    Top = 568
+    Left = 926
+    Top = 528
   end
   object NetHTTPReqUploadToScan: TNetHTTPRequest
     Asynchronous = True
     Client = NetHTTPClientUploadToScan
-    Left = 636
-    Top = 541
+    Left = 372
+    Top = 533
   end
   object NetHTTPClientUploadToScan: TNetHTTPClient
     Asynchronous = True
     UserAgent = 'Embarcadero URI Client/1.0'
-    Left = 636
-    Top = 607
+    Left = 580
+    Top = 535
   end
   object TimerFileAnalysis: TTimer
     Enabled = False
     OnTimer = TimerFileAnalysisTimer
-    Left = 932
-    Top = 500
+    Left = 708
+    Top = 364
   end
   object TimerRegistryLogReader: TTimer
     Enabled = False
     Interval = 1500
     OnTimer = TimerRegistryLogReaderTimer
     Left = 120
-    Top = 208
+    Top = 192
   end
   object PythonGUIInputOutputPDFAnalyzer: TPythonGUIInputOutput
     UnicodeIO = True
     RawOutput = False
     Output = MemoPDFAnalyzer
-    Left = 316
-    Top = 476
+    Left = 116
+    Top = 532
   end
   object TimerDaemon: TTimer
     Enabled = False
-    Left = 752
-    Top = 448
+    Interval = 7000
+    Left = 920
+    Top = 360
   end
   object PythonGUIInputOutputScanResult: TPythonGUIInputOutput
     UnicodeIO = True
     RawOutput = False
     Output = MemoScanResult
-    Left = 864
-    Top = 72
+    Left = 400
+    Top = 306
   end
 end

@@ -19,7 +19,7 @@ Type
     TabSheet4: TTabSheet;
     MemoNetworkActivity: TMemo;
     LblNetworkActivity: TLabel;
-    PythonEngineNetworkActivity: TPythonEngine;
+    PythonEngine: TPythonEngine;
     PythonGUIInputOutputNA: TPythonGUIInputOutput;
     TimerNetworkActivity: TTimer;
     WebShield: TTabSheet;
@@ -72,6 +72,7 @@ Type
     procedure ToggleSwitchRegistryChangesClick(Sender: TObject);
     procedure ToggleSwitchFileActivityClick(Sender: TObject);
     procedure TimerRegistryLogReaderTimer(Sender: TObject);
+    procedure BtnAnalyzePDFClick(Sender: TObject);
   Private
     VT_API_KEY: String;
     FAnalysis_ID: String;
@@ -265,6 +266,28 @@ Begin
     End;
   End;
 End;
+
+procedure TFormMain.BtnAnalyzePDFClick(Sender: TObject);
+var
+  ScriptFolder, ScriptPath: String;
+Begin
+  // Define the path to the script
+  ScriptFolder := 'D:\CyberKombat RT\vendor\pdf_tools\';
+  ScriptPath := TPath.Combine(ScriptFolder, 'pdf_analyzer.py');
+
+  PythonEngine.IO := PythonGUIInputOutputPDFAnalyzer;
+
+  // Check if the Python script file exists before attempting to run it
+  If TFile.Exists(ScriptPath) Then
+  Begin
+    // Create and start the script execution thread
+    TPythonScriptThread.Create(ScriptPath);
+  End
+  Else
+  Begin
+    WriteToLogFile('pdf_analyzer.py script not found or can`t access;');
+  End;
+end;
 
 Procedure TFormMain.BtnScanURLogClick(Sender: TObject);
 Begin
@@ -476,6 +499,8 @@ Begin
   ScriptFolder := 'D:\CyberKombat RT\scripts';
   ScriptPath := TPath.Combine(ScriptFolder, 'NetworkInfo.py');
 
+  PythonEngine.IO := PythonGUIInputOutputNA;
+
   // Check if the Python script file exists before attempting to run it
   If TFile.Exists(ScriptPath) Then
   Begin
@@ -574,11 +599,12 @@ Begin
     If FileExists(FScriptPath) Then
     Begin
       ScriptContent.LoadFromFile(FScriptPath);
-      // Assuming PythonEngineNetworkActivity is thread-safe or called in a way that is safe (like using Synchronize)
+      // Assuming PythonEngine is thread-safe or called in a way that
+      //  is safe (like using Synchronize)
       Synchronize(
         Procedure
         Begin
-          FormMain.PythonEngineNetworkActivity.ExecString
+          FormMain.PythonEngine.ExecString
             (AnsiString(ScriptContent.Text));
         End);
     End;
