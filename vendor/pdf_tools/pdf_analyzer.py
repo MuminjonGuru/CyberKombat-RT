@@ -12,12 +12,10 @@ def evaluate_threat_level(warnings):
     else:
         return 'LOW THREAT', warnings
 
-def check_pdf_for_warnings(result_stdout):
+def check_pdf_for_warnings(result_stdout, full_path):
     warnings = []
-    # Print output for debugging
-    # print("Debug - pdfid.py output:", result_stdout)
     criteria = {
-        ' JavaScript ': 'contains JavaScript',  # Space around to prevent partial matches
+        ' JavaScript ': 'contains JavaScript',
         ' EmbeddedFile ': 'contains an embedded file',
         ' /AA ': 'contains additional actions',
         ' /OpenAction ': 'has an open action',
@@ -29,7 +27,15 @@ def check_pdf_for_warnings(result_stdout):
     for key, message in criteria.items():
         if key in result_stdout:
             warnings.append(message)
-    return warnings
+
+    if warnings:
+        threat_level, detailed_warnings = evaluate_threat_level(warnings)
+        warning_messages = ', '.join(detailed_warnings)
+        # Directly print the final message
+        final_message = f"{threat_level}: The file {full_path} {warning_messages}."
+        print(final_message)
+        return final_message  # This allows for potential future use beyond printing
+    return None  # Indicates no warnings were found or printed
 
 processed_files = set()  # Set to store paths of processed files
 
@@ -44,17 +50,8 @@ def scan_pdf(directory):
 
                 try:
                     result = subprocess.run(['python', 'pdfid.py', full_path], capture_output=True, text=True, timeout=30, creationflags=subprocess.CREATE_NO_WINDOW)
-                    warnings = check_pdf_for_warnings(result.stdout)
-                    if warnings:
-                        threat_level, detailed_warnings = evaluate_threat_level(warnings)
-                        warning_messages = ', '.join(detailed_warnings)
-                        print(f"{threat_level}: The file {full_path} {warning_messages}.")
-                except subprocess.TimeoutExpired:
-                    print(f"ERROR: Scanning of {full_path} took too long and was terminated.")
-                except subprocess.CalledProcessError as e:
-                    print(f"ERROR: An error occurred while scanning {full_path}: {e}")
-                except PermissionError:
-                    print(f"ERROR: Permission denied for {full_path}.")
+                    # Now, check_pdf_for_warnings handles everything
+                    check_pdf_for_warnings(result.stdout, full_path)
                 except Exception as e:
                     print(f"ERROR: An unexpected error occurred while scanning {full_path}: {str(e)}")
 
