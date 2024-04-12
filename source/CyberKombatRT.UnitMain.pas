@@ -270,12 +270,16 @@ End;
 procedure TFormMain.BtnAnalyzePDFClick(Sender: TObject);
 var
   ScriptFolder, ScriptPath: String;
+  ExecuteResult: Integer;
 Begin
   MemoPDFAnalyzer.Lines.Clear;
 
   ScriptFolder := 'D:\CyberKombat RT\vendor\pdf_tools\';
   ScriptPath := TPath.Combine(ScriptFolder, 'pdf_analyzer.py');
-  ShellExecute(0, 'open', 'python', PChar(ScriptPath), nil, SW_HIDE);
+
+  ExecuteResult := ShellExecute(0, 'open', 'python', PChar('"' + ScriptPath + '"'), nil, SW_SHOW);
+  if ExecuteResult <= 32 then
+    MemoPDFAnalyzer.Lines.Append('Error executing script: ' + SysErrorMessage(ExecuteResult));
 end;
 
 procedure TFormMain.BtnPDFActionClick(Sender: TObject);
