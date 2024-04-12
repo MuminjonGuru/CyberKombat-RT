@@ -70,3 +70,4 @@ modules/
 scripts/config.py
 scripts/__pycache__/config.cpython-310.pyc
 scripts/__pycache__/utils.cpython-310.pyc
+/logs
