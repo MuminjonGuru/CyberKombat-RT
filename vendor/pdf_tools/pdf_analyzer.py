@@ -65,7 +65,7 @@ user_name = os.getenv('USERNAME')
 directories = [f'C:\\Users\\{user_name}\\Downloads\\Documents']
 
 if __name__ == '__main__':
-    log_file_path = 'D:\CyberKombat RT\logs\pdf_logs.txt'  # Define the path to the log file
-    with open(log_file_path, 'a') as log_file:  # Open the file in append mode
+    log_file_path = r'D:\CyberKombat RT\logs\pdf_logs.txt'  # Define the path to the log file
+    with open(log_file_path, 'w') as log_file:  # Open the file in write mode
         for directory in directories:
             scan_pdf(directory, log_file)
