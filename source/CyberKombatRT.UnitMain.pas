@@ -73,6 +73,9 @@ Type
     procedure TimerRegistryLogReaderTimer(Sender: TObject);
     procedure BtnAnalyzePDFClick(Sender: TObject);
     procedure BtnPDFActionClick(Sender: TObject);
+    procedure BtnScanDaemonStartClick(Sender: TObject);
+    procedure BtnUpdateDaemonClick(Sender: TObject);
+    procedure BtnScanReportClick(Sender: TObject);
   Private
     VT_API_KEY: String;
     FAnalysis_ID: String;
@@ -160,6 +163,30 @@ begin
     on E: Exception do
       // Handle the error, for example, log it or show a message to the user
       WriteToLogFile('Error_writing_to_file_' + E.Message +  '_' + FilePath);
+  end;
+end;
+
+procedure TFormMain.BtnUpdateDaemonClick(Sender: TObject);
+begin
+  var FileName := 'D:\CyberKombat RT\config\directories.csv'; // Path to the file
+
+  // Check if the file exists
+  if FileExists(FileName) then
+  begin
+    // If the file exists, load the file contents into the MemoScanList
+    MemoScanList.Lines.LoadFromFile(FileName);
+
+    // Check if the MemoScanList has any lines of data
+    if MemoScanList.Lines.Count > 0 then
+      BtnScanDaemonStart.Enabled := True  // Enable list is available
+    else
+      BtnScanDaemonStart.Enabled := False; // disable if the memo is empty
+  end
+  else
+  begin
+    // Optionally handle the case where the file does not exist
+    WriteToLogFile('File not found for AV Scanning: ' + FileName);
+    BtnScanDaemonStart.Enabled := False; // disable no directoreis added.
   end;
 end;
 
@@ -305,6 +332,32 @@ begin
   MemoPDFAnalyzer.Lines.LoadFromFile('D:\CyberKombat RT\logs\pdf_logs.txt');
 end;
 
+procedure TFormMain.BtnScanDaemonStartClick(Sender: TObject);
+Var
+  ScriptFolder, ScriptPath: String;
+Begin
+  // Define the path to the script
+  ScriptFolder := 'D:\CyberKombat RT\vendor\clamav';
+  ScriptPath := TPath.Combine(ScriptFolder, 'clamdaemon.py');
+
+  PythonEngine.IO := PythonGUIInputOutputScanResult;
+
+  If TFile.Exists(ScriptPath) Then
+  Begin
+    // Create and start the script execution thread
+    TPythonScriptThread.Create(ScriptPath);
+  End
+  Else
+  Begin
+    WriteToLogFile('clamdaemon.py script not found or can`t access;');
+  End;
+end;
+
+procedure TFormMain.BtnScanReportClick(Sender: TObject);
+begin
+  //
+end;
+
 Procedure TFormMain.BtnScanURLogClick(Sender: TObject);
 Begin
   // capture to a file  - Will be moved to OnCreate function probably
@@ -388,6 +441,7 @@ Begin
     ShowMessage('Key accepted');
   end;
 
+  // Scan directories list must be loaded. It can be updated with Update button
   try
     var ConfigFolder := 'D:\CyberKombat RT\config';
     var ConfigPath   := TPath.Combine(ConfigFolder, 'directories.csv');

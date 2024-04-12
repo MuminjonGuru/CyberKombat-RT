@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -82,6 +82,7 @@ object FormMain: TFormMain
         Height = 29
         Caption = 'Update'
         TabOrder = 1
+        OnClick = BtnUpdateDaemonClick
       end
       object BtnScanDaemonStart: TButton
         Left = 879
@@ -91,6 +92,7 @@ object FormMain: TFormMain
         Caption = 'Scan'
         Enabled = False
         TabOrder = 2
+        OnClick = BtnScanDaemonStartClick
       end
       object BtnScanReport: TButton
         Left = 879
@@ -100,6 +102,7 @@ object FormMain: TFormMain
         Caption = 'Report'
         Enabled = False
         TabOrder = 3
+        OnClick = BtnScanReportClick
       end
       object PBScanGauge: TProgressBar
         Left = 16
@@ -441,8 +444,8 @@ object FormMain: TFormMain
     UnicodeIO = True
     RawOutput = False
     Output = MemoNetworkActivity
-    Left = 123
-    Top = 308
+    Left = 834
+    Top = 49
   end
   object TimerNetworkActivity: TTimer
     Enabled = False
@@ -455,8 +458,8 @@ object FormMain: TFormMain
     UnicodeIO = True
     RawOutput = False
     Output = MemoRegistryChanges
-    Left = 120
-    Top = 128
+    Left = 158
+    Top = 112
   end
   object PythonGUIInputOutputFileActivity: TPythonGUIInputOutput
     UnicodeIO = True
@@ -491,7 +494,7 @@ object FormMain: TFormMain
     Enabled = False
     OnTimer = TimerFileAnalysisTimer
     Left = 708
-    Top = 364
+    Top = 308
   end
   object TimerRegistryLogReader: TTimer
     Enabled = False
@@ -504,13 +507,13 @@ object FormMain: TFormMain
     Enabled = False
     Interval = 7000
     Left = 920
-    Top = 360
+    Top = 312
   end
   object PythonGUIInputOutputScanResult: TPythonGUIInputOutput
     UnicodeIO = True
     RawOutput = False
     Output = MemoScanResult
-    Left = 400
-    Top = 306
+    Left = 640
+    Top = 426
   end
 end
