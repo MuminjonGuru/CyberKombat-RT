@@ -270,16 +270,33 @@ End;
 procedure TFormMain.BtnAnalyzePDFClick(Sender: TObject);
 var
   ScriptFolder, ScriptPath: String;
-  ExecuteResult: Integer;
-Begin
+  SEInfo: TShellExecuteInfo;
+  ExitCode: DWORD;
+begin
   MemoPDFAnalyzer.Lines.Clear;
 
   ScriptFolder := 'D:\CyberKombat RT\vendor\pdf_tools\';
   ScriptPath := TPath.Combine(ScriptFolder, 'pdf_analyzer.py');
 
-  ExecuteResult := ShellExecute(0, 'open', 'python', PChar('"' + ScriptPath + '"'), nil, SW_SHOW);
-  if ExecuteResult <= 32 then
-    MemoPDFAnalyzer.Lines.Append('Error executing script: ' + SysErrorMessage(ExecuteResult));
+  FillChar(SEInfo, SizeOf(SEInfo), 0);
+  SEInfo.cbSize := SizeOf(TShellExecuteInfo);
+  SEInfo.fMask := SEE_MASK_NOCLOSEPROCESS;
+  SEInfo.Wnd := Application.Handle;
+  SEInfo.lpFile := PChar('python'); // or the full path to the Python executable
+  SEInfo.lpParameters := PChar('"' + ScriptPath + '"');
+  SEInfo.lpDirectory := PChar(ScriptFolder);
+  SEInfo.nShow := SW_SHOW;
+
+  if ShellExecuteEx(@SEInfo) then
+  begin
+    WaitForSingleObject(SEInfo.hProcess, INFINITE);
+    GetExitCodeProcess(SEInfo.hProcess, ExitCode);
+    CloseHandle(SEInfo.hProcess);
+    if ExitCode <> 0 then
+      MemoPDFAnalyzer.Lines.Append('Script executed with errors. Exit code: ' + IntToStr(ExitCode));
+  end
+  else
+    MemoPDFAnalyzer.Lines.Append('Failed to execute script.');
 end;
 
 procedure TFormMain.BtnPDFActionClick(Sender: TObject);
