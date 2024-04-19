@@ -13,12 +13,16 @@ def scan_file(file_path):
 
         # Handle the scan result
         if result:
-            virus_name = result[file_path][1]
-            print(f"{file_path}: {virus_name}")
-            if attempt_delete(file_path):
-                print(f"Deleted {file_path} as it was infected with {virus_name}.")
+            virus_info = result.get(file_path)  # Get the result for the specific file
+            if virus_info:
+                virus_name = virus_info[1]  # The second item in the tuple is usually the virus name
+                print(f"{file_path}: {virus_name}")
+                if attempt_delete(file_path):
+                    print(f"Deleted {file_path} as it was infected with {virus_name}.")
+                else:
+                    print(f"Failed to delete {file_path}. Permission denied or file is in use.")
             else:
-                print(f"Failed to delete {file_path}. Permission denied or file is in use.")
+                print(f"Scan error for {file_path}: {virus_info}")
         else:
             print(f"No malware detected in {file_path}.")
     except Exception as e:
