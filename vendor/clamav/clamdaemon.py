@@ -1,69 +1,49 @@
-import csv
 import pyclamd
 import os
-import stat
 
-def scan_file(file_path):
+
+def check_clamd_running(host='127.0.0.1', port=3310):
     try:
-        # Initialize the clamd connection
-        cd = pyclamd.ClamdNetworkSocket('127.0.0.1', 3310)
+        cd = pyclamd.ClamdNetworkSocket(host, port)
+        # Attempt to get the version of clamd to check if it's running
+        version = cd.version()
+        print(f"ClamAV daemon is running. Version: {version}")
+        return cd  # Return the ClamAV connection object
+    except pyclamd.ConnectionError:
+        print("Failed to connect to ClamAV daemon. It may not be running.")
+        return None
 
-        # Scan the individual file
-        result = cd.scan_file(file_path)
-
-        # Check if result is not None and process accordingly
-        if result:
-            status, description = result[file_path]
-            if status == 'FOUND':
-                print(f"{file_path}: Infected with {description}")
-                if attempt_delete(file_path):
-                    print(f"Deleted {file_path} as it was infected with {description}.")
-                else:
-                    print(f"Failed to delete {file_path}. Permission denied or file is in use.")
-            else:
-                print(f"Error scanning {file_path}: {description}")
-        else:
-            print(f"No malware detected in {file_path}.")
-    except Exception as e:
-        print(f"An error occurred while scanning {file_path}: {e}")
-
-def attempt_delete(file_path):
-    """Attempt to delete a file, handling permissions if necessary."""
+def handle_infected_file(file_path):
     try:
         os.remove(file_path)
+        print(f"Deleted infected file: {file_path}")
         return True
     except PermissionError:
-        # Try changing the file's permission to writable and then delete
-        os.chmod(file_path, stat.S_IWUSR)
-        try:
-            os.remove(file_path)
-            return True
-        except Exception as e:
-            print(f"Retry failed: {e}")
-            return False
+        print(f"Permission denied: Could not delete {file_path}")
+        return False
     except Exception as e:
         print(f"Failed to delete {file_path}: {e}")
         return False
 
 def scan_directory(directory_path):
-    # Iterate through each file in the directory
-    for root, dirs, files in os.walk(directory_path):
-        for file in files:
-            file_path = os.path.join(root, file)
-            scan_file(file_path)
-
-def read_directories_from_csv(file_path):
-    directories = []
-    with open(file_path, mode='r', newline='', encoding='utf-8') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            if row:  # Check if the row is not empty
-                directories.append(row[0])
-    return directories
+    cd = check_clamd_running()
+    if cd:
+        try:
+            # Scan the specified directory
+            result = cd.multiscan_file(directory_path)
+            if result:
+                print(f"Malware found in {directory_path}:")
+                for infected_file, virus_name in result.items():
+                    if virus_name[0] == 'FOUND':  # Check if the result indicates malware was found
+                        print(f"{infected_file}: {virus_name[1]}")  # Log the virus name
+                        if handle_infected_file(infected_file):  # Attempt to delete the infected file
+                            print(f"Successfully deleted {infected_file}.")
+                        else:
+                            print(f"Failed to delete {infected_file}.")
+            else:
+                print(f"No malware detected in {directory_path}.")
+        except Exception as e:
+            print(f"Error scanning {directory_path}: {e}")
 
 # Example usage
-csv_file_path = 'D:\\CyberKombat RT\\config\\directories.csv'  # Update this path to your actual CSV file location
-directories_to_scan = read_directories_from_csv(csv_file_path)
-
-for directory in directories_to_scan:
-    scan_directory(directory)
+scan_directory(r'C:\Users\user\Downloads\Compressed')
