@@ -11,18 +11,17 @@ def scan_file(file_path):
         # Scan the individual file
         result = cd.scan_file(file_path)
 
-        # Handle the scan result
+        # Check if result is not None and process accordingly
         if result:
-            virus_info = result.get(file_path)  # Get the result for the specific file
-            if virus_info:
-                virus_name = virus_info[1]  # The second item in the tuple is usually the virus name
-                print(f"{file_path}: {virus_name}")
+            status, description = result[file_path]
+            if status == 'FOUND':
+                print(f"{file_path}: Infected with {description}")
                 if attempt_delete(file_path):
-                    print(f"Deleted {file_path} as it was infected with {virus_name}.")
+                    print(f"Deleted {file_path} as it was infected with {description}.")
                 else:
                     print(f"Failed to delete {file_path}. Permission denied or file is in use.")
             else:
-                print(f"Scan error for {file_path}: {virus_info}")
+                print(f"Error scanning {file_path}: {description}")
         else:
             print(f"No malware detected in {file_path}.")
     except Exception as e:
