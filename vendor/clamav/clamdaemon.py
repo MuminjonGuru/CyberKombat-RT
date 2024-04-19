@@ -1,32 +1,28 @@
 import csv
 import pyclamd
 import os
+import stat
 
-def scan_directory(directory_path):
+def scan_file(file_path):
     try:
         # Initialize the clamd connection
         cd = pyclamd.ClamdNetworkSocket('127.0.0.1', 3310)
 
-        # Scan the entire directory
-        result = cd.multiscan_file(directory_path)
+        # Scan the individual file
+        result = cd.scan_file(file_path)
 
-        # Handle the scan results
+        # Handle the scan result
         if result:
-            print(f"Malware Found in {directory_path}:")
-            for infected_file, virus_name in result.items():
-                if os.path.isfile(infected_file):  # Ensure it's a file, not a directory
-                    print(f"{infected_file}: {virus_name}")
-                    # Attempt to delete the infected file
-                    if attempt_delete(infected_file):
-                        print(f"Deleted {infected_file} as it was infected with {virus_name}.")
-                    else:
-                        print(f"Failed to delete {infected_file}. Permission denied or file is in use.")
-                else:
-                    print(f"Skipped {infected_file} because it's a directory.")
+            virus_name = result[file_path][1]
+            print(f"{file_path}: {virus_name}")
+            if attempt_delete(file_path):
+                print(f"Deleted {file_path} as it was infected with {virus_name}.")
+            else:
+                print(f"Failed to delete {file_path}. Permission denied or file is in use.")
         else:
-            print(f"No malware detected in {directory_path}.")
+            print(f"No malware detected in {file_path}.")
     except Exception as e:
-        print(f"An error occurred while scanning {directory_path}: {e}")
+        print(f"An error occurred while scanning {file_path}: {e}")
 
 def attempt_delete(file_path):
     """Attempt to delete a file, handling permissions if necessary."""
@@ -45,6 +41,13 @@ def attempt_delete(file_path):
     except Exception as e:
         print(f"Failed to delete {file_path}: {e}")
         return False
+
+def scan_directory(directory_path):
+    # Iterate through each file in the directory
+    for root, dirs, files in os.walk(directory_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            scan_file(file_path)
 
 def read_directories_from_csv(file_path):
     directories = []
