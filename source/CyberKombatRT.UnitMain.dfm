@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet1
+    ActivePage = WebShield
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -361,7 +361,7 @@ object FormMain: TFormMain
       object MemoURLCheckLog: TMemo
         Left = 20
         Top = 119
-        Width = 980
+        Width = 990
         Height = 150
         BevelInner = bvSpace
         BevelKind = bkSoft
@@ -380,7 +380,7 @@ object FormMain: TFormMain
       object BtnScanURLog: TButton
         Left = 935
         Top = 80
-        Width = 65
+        Width = 75
         Height = 35
         Caption = 'Log'
         TabOrder = 3
@@ -389,7 +389,7 @@ object FormMain: TFormMain
       object MemoFileScanLog: TMemo
         Left = 20
         Top = 383
-        Width = 980
+        Width = 990
         Height = 150
         BevelInner = bvSpace
         BevelKind = bkSoft
@@ -408,7 +408,7 @@ object FormMain: TFormMain
       object BtnUpload: TButton
         Left = 815
         Top = 344
-        Width = 185
+        Width = 195
         Height = 35
         Caption = 'Upload and Analyse'
         TabOrder = 5
@@ -481,14 +481,14 @@ object FormMain: TFormMain
   object NetHTTPReqUploadToScan: TNetHTTPRequest
     Asynchronous = True
     Client = NetHTTPClientUploadToScan
-    Left = 372
-    Top = 533
+    Left = 281
+    Top = 442
   end
   object NetHTTPClientUploadToScan: TNetHTTPClient
     Asynchronous = True
     UserAgent = 'Embarcadero URI Client/1.0'
-    Left = 580
-    Top = 535
+    Left = 365
+    Top = 381
   end
   object TimerFileAnalysis: TTimer
     Enabled = False
@@ -513,7 +513,7 @@ object FormMain: TFormMain
     UnicodeIO = True
     RawOutput = False
     Output = MemoScanResult
-    Left = 640
-    Top = 426
+    Left = 648
+    Top = 450
   end
 end
