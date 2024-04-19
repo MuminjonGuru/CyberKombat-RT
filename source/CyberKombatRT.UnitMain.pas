@@ -19,7 +19,6 @@ Type
     TabSheet4: TTabSheet;
     MemoNetworkActivity: TMemo;
     LblNetworkActivity: TLabel;
-    PythonEngine: TPythonEngine;
     PythonGUIInputOutputNA: TPythonGUIInputOutput;
     TimerNetworkActivity: TTimer;
     WebShield: TTabSheet;
@@ -61,6 +60,7 @@ Type
     PythonGUIInputOutputScanResult: TPythonGUIInputOutput;
     Panel1: TPanel;
     Panel2: TPanel;
+    PythonEngine: TPythonEngine;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
@@ -346,6 +346,8 @@ Begin
   Begin
     // Create and start the script execution thread
     TPythonScriptThread.Create(ScriptPath);
+    MemoScanResult.Clear;
+    MemoScanResult.Lines.Append('Scanning started...');
   End
   Else
   Begin
@@ -598,10 +600,13 @@ begin
   if ToggleSwitchNetworkActivity.State = tssOff then
   begin
     TimerNetworkActivity.Enabled := False;
+    MemoNetworkActivity.Lines.Append('Service stopped.');
   end
   else if ToggleSwitchNetworkActivity.State = tssOn then
   begin
     TimerNetworkActivity.Enabled := True;
+    MemoNetworkActivity.Clear;
+    MemoNetworkActivity.Lines.Append('Service started.');
   end;
 end;
 
@@ -610,10 +615,13 @@ begin
   if ToggleSwitchRegistryChanges.State = tssOff then
   begin
     TimerRegistryLogReader.Enabled := False;
+    MemoRegistryChanges.Lines.Append('Service stopped.');
   end
   else if ToggleSwitchRegistryChanges.State = tssOn then
   begin
     TimerRegistryLogReader.Enabled := True;
+    MemoRegistryChanges.Clear;
+    MemoRegistryChanges.Lines.Append('Service started.');
   end;
 end;
 

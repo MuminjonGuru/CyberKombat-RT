@@ -67,7 +67,7 @@ object FormMain: TFormMain
         BevelOuter = bvRaised
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = [fsItalic]
         Lines.Strings = (
@@ -86,7 +86,7 @@ object FormMain: TFormMain
         OnClick = BtnUpdateDaemonClick
       end
       object BtnScanDaemonStart: TButton
-        Left = 879
+        Left = 881
         Top = 429
         Width = 148
         Height = 29
@@ -123,7 +123,7 @@ object FormMain: TFormMain
         BevelOuter = bvRaised
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
-        Font.Height = -15
+        Font.Height = -13
         Font.Name = 'Segoe UI'
         Font.Style = [fsItalic]
         Lines.Strings = (
@@ -304,7 +304,7 @@ object FormMain: TFormMain
         Left = 20
         Top = 80
         Width = 997
-        Height = 401
+        Height = 225
         BevelInner = bvSpace
         BevelKind = bkSoft
         DragCursor = crHandPoint
@@ -435,22 +435,17 @@ object FormMain: TFormMain
       end
     end
   end
-  object PythonEngine: TPythonEngine
-    IO = PythonGUIInputOutputNA
-    Left = 681
-    Top = 124
-  end
   object PythonGUIInputOutputNA: TPythonGUIInputOutput
     DelayWrites = True
     UnicodeIO = True
     RawOutput = False
     Output = MemoNetworkActivity
-    Left = 834
-    Top = 49
+    Left = 811
+    Top = 133
   end
   object TimerNetworkActivity: TTimer
     Enabled = False
-    Interval = 20000
+    Interval = 10000
     OnTimer = TimerNetworkActivityTimer
     Left = 678
     Top = 199
@@ -488,8 +483,8 @@ object FormMain: TFormMain
   object NetHTTPClientUploadToScan: TNetHTTPClient
     Asynchronous = True
     UserAgent = 'Embarcadero URI Client/1.0'
-    Left = 365
-    Top = 381
+    Left = 552
+    Top = 564
   end
   object TimerFileAnalysis: TTimer
     Enabled = False
@@ -516,5 +511,10 @@ object FormMain: TFormMain
     Output = MemoScanResult
     Left = 648
     Top = 450
+  end
+  object PythonEngine: TPythonEngine
+    IO = PythonGUIInputOutputNA
+    Left = 864
+    Top = 240
   end
 end

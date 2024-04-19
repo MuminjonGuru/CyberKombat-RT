@@ -6,8 +6,9 @@ def check_clamd_running(host='127.0.0.1', port=3310):
     try:
         cd = pyclamd.ClamdNetworkSocket(host, port)
         # Attempt to get the version of clamd to check if it's running
-        version = cd.version()
-        print(f"ClamAV daemon is running. Version: {version}")
+        # version = cd.version()
+        # print(f"ClamAV daemon is running. Version: {version}")
+        print("Scanning...");
         return cd  # Return the ClamAV connection object
     except pyclamd.ConnectionError:
         print("Failed to connect to ClamAV daemon. It may not be running.")

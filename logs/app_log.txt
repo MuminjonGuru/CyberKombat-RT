@@ -1,3 +1,8 @@
 2024-02-07 04:54:47 - Error on VT URL Scan: Invalid class typecast
 2024-02-07 10:22:07 - Error on VT URL Scan: Error adding header: (12150) The requested header was not found
 2024-02-07 10:22:32 - Error on VT URL Scan: Error adding header: (12150) The requested header was not found
+2024-04-19 12:00:41 - clamdaemon.py script not found or can`t access;
+2024-04-19 12:00:46 - clamdaemon.py script not found or can`t access;
+2024-04-19 12:01:02 - clamdaemon.py script not found or can`t access;
+2024-04-19 12:01:31 - clamdaemon.py script not found or can`t access;
+2024-04-19 12:02:31 - clamdaemon.py script not found or can`t access;
