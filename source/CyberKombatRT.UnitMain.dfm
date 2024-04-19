@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = WebShield
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -71,7 +71,8 @@ object FormMain: TFormMain
         Font.Name = 'Segoe UI'
         Font.Style = [fsItalic]
         Lines.Strings = (
-          'C:/Users/Public/')
+          'C:/Users/user/Downloads/Documents'
+          'C:/Users/user/Downloads/Compressed')
         ParentFont = False
         TabOrder = 0
       end
