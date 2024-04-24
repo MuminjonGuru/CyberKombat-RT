@@ -523,7 +523,7 @@ object FormMain: TFormMain
   end
   object TimerRegistryLogReader: TTimer
     Enabled = False
-    Interval = 5000
+    Interval = 10000
     OnTimer = TimerRegistryLogReaderTimer
     Left = 120
     Top = 192

@@ -181,29 +181,25 @@ def monitor_registry():
     previous_states = {}
 
     try:
-        while True:
-            for category, paths in REGISTRY_LOCATIONS.items():
-                log_output(f"Checking {category}...")
+        for category, paths in REGISTRY_LOCATIONS.items():
+            log_output(f"Checking {category}...")
 
-                for entry in paths:
-                    hive, path = entry[:2]  # Ensure only two items are unpacked
-                    value_name = entry[2] if len(entry) > 2 else None  # Handles optional value name
+            for entry in paths:
+                hive, path = entry[:2]  # Ensure only two items are unpacked
+                value_name = entry[2] if len(entry) > 2 else None  # Handles optional value name
 
-                    # Take a snapshot of the current state of the registry key
-                    current_state = snapshot_registry(hive, path)
+                # Take a snapshot of the current state of the registry key
+                current_state = snapshot_registry(hive, path)
 
-                    # If we have a previous state, compare it to the current state
-                    if (hive, path) in previous_states:
-                        check_registry_changes(previous_states[(hive, path)], current_state)
+                # If we have a previous state, compare it to the current state
+                if (hive, path) in previous_states:
+                    check_registry_changes(previous_states[(hive, path)], current_state)
 
-                    # Update the previous_states dictionary with the current state for future comparison
-                    previous_states[(hive, path)] = current_state
+                # Update the previous_states dictionary with the current state for future comparison
+                previous_states[(hive, path)] = current_state
 
-                    # Check for suspicious entries based on patterns (original functionality)
-                    check_suspicious_entries(hive, path, value_name)
-
-            log_output("Sleeping for 5 seconds...\n")
-            time.sleep(5)  # sleep between scans
+                # Check for suspicious entries based on patterns (original functionality)
+                check_suspicious_entries(hive, path, value_name)
     except KeyboardInterrupt:
         log_output("\nScript stopped by user. Exiting...")
 
