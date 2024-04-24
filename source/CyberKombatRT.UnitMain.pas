@@ -61,6 +61,9 @@ Type
     Panel1: TPanel;
     Panel2: TPanel;
     PythonEngine: TPythonEngine;
+    BtnNetworkReport: TButton;
+    MemoNetworkGPT: TMemo;
+    PythonIONetworkGPT: TPythonGUIInputOutput;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
@@ -76,6 +79,7 @@ Type
     procedure BtnScanDaemonStartClick(Sender: TObject);
     procedure BtnUpdateDaemonClick(Sender: TObject);
     procedure BtnScanReportClick(Sender: TObject);
+    procedure BtnNetworkReportClick(Sender: TObject);
   Private
     VT_API_KEY: String;
     FAnalysis_ID: String;
@@ -324,6 +328,29 @@ begin
   end
   else
     MemoPDFAnalyzer.Lines.Append('Failed to execute script.');
+end;
+
+procedure TFormMain.BtnNetworkReportClick(Sender: TObject);
+Var
+  ScriptFolder, ScriptPath: String;
+Begin
+  // Define the path to the script
+  ScriptFolder := 'D:\CyberKombat RT\scripts';
+  ScriptPath := TPath.Combine(ScriptFolder, 'NetworkAnalyzeGPT.py');
+
+  PythonEngine.IO := PythonIONetworkGPT;
+
+  If TFile.Exists(ScriptPath) Then
+  Begin
+    // Create and start the script execution thread
+    TPythonScriptThread.Create(ScriptPath);
+    MemoNetworkGPT.Clear;
+    MemoNetworkGPT.Lines.Append('GPT started...');
+  End
+  Else
+  Begin
+    WriteToLogFile('NetworkAnalyzeGPT.py script not found or can`t access;');
+  End;
 end;
 
 procedure TFormMain.BtnPDFActionClick(Sender: TObject);
@@ -586,8 +613,25 @@ Begin
 End;
 
 procedure TFormMain.TimerRegistryLogReaderTimer(Sender: TObject);
-begin
-  // load the log file here on the Tmemo
+Var
+  ScriptFolder, ScriptPath: String;
+Begin
+  // Define the path to the script
+  ScriptFolder := 'D:\CyberKombat RT\scripts';
+  ScriptPath := TPath.Combine(ScriptFolder, 'RegistryControl.py');
+
+  PythonEngine.IO := PythonGUIInputOutputRegistry;
+
+  // Check if the Python script file exists before attempting to run it
+  If TFile.Exists(ScriptPath) Then
+  Begin
+    // Create and start the script execution thread
+    TPythonScriptThread.Create(ScriptPath);
+  End
+  Else
+  Begin
+    WriteToLogFile('RegistryControl.py script not found or can`t access;');
+  End;
 end;
 
 procedure TFormMain.ToggleSwitchFileActivityClick(Sender: TObject);

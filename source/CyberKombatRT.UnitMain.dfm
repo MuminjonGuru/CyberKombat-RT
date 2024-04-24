@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet1
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -327,6 +327,34 @@ object FormMain: TFormMain
         TabOrder = 1
         OnClick = ToggleSwitchNetworkActivityClick
       end
+      object MemoNetworkGPT: TMemo
+        Left = 20
+        Top = 311
+        Width = 869
+        Height = 225
+        BevelInner = bvSpace
+        BevelKind = bkSoft
+        DragCursor = crHandPoint
+        EditMargins.Left = 1
+        EditMargins.Right = 1
+        Font.Charset = RUSSIAN_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Consolas'
+        Font.Style = []
+        ParentFont = False
+        ScrollBars = ssVertical
+        TabOrder = 2
+      end
+      object BtnNetworkReport: TButton
+        Left = 903
+        Top = 311
+        Width = 114
+        Height = 35
+        Caption = 'Report'
+        TabOrder = 3
+        OnClick = BtnNetworkReportClick
+      end
     end
     object WebShield: TTabSheet
       Caption = 'Web Shield'
@@ -451,6 +479,7 @@ object FormMain: TFormMain
     Top = 199
   end
   object PythonGUIInputOutputRegistry: TPythonGUIInputOutput
+    DelayWrites = True
     UnicodeIO = True
     RawOutput = False
     Output = MemoRegistryChanges
@@ -494,7 +523,7 @@ object FormMain: TFormMain
   end
   object TimerRegistryLogReader: TTimer
     Enabled = False
-    Interval = 1500
+    Interval = 5000
     OnTimer = TimerRegistryLogReaderTimer
     Left = 120
     Top = 192
@@ -502,8 +531,8 @@ object FormMain: TFormMain
   object TimerDaemon: TTimer
     Enabled = False
     Interval = 7000
-    Left = 920
-    Top = 312
+    Left = 960
+    Top = 256
   end
   object PythonGUIInputOutputScanResult: TPythonGUIInputOutput
     UnicodeIO = True
@@ -516,5 +545,12 @@ object FormMain: TFormMain
     IO = PythonGUIInputOutputNA
     Left = 864
     Top = 240
+  end
+  object PythonIONetworkGPT: TPythonGUIInputOutput
+    UnicodeIO = True
+    RawOutput = False
+    Output = MemoNetworkGPT
+    Left = 520
+    Top = 376
   end
 end

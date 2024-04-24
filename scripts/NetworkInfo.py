@@ -18,11 +18,19 @@ suspicious_criteria = {
 # Function to run the PowerShell script silently
 def run_powershell_script(script_name):
     try:
+        # Configure startup settings to prevent the PowerShell window from showing
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        startupinfo.wShowWindow = subprocess.SW_HIDE
+
+        # Execute the PowerShell script with the specified startup settings
         subprocess.run(["powershell.exe", "-ExecutionPolicy", "Unrestricted", "-File", script_name],
-                       capture_output=True, check=True)
+                       capture_output=True, check=True, startupinfo=startupinfo)
         logging.info("PowerShell script executed successfully.")
     except subprocess.CalledProcessError as e:
-        logging.error(f"Failed to run PowerShell script: {e}")
+        logging.error("Failed to run PowerShell script:")
+        logging.error(e.stdout)  # Log standard output on error
+        logging.error(e.stderr)  # Log standard error
 
 # Function to check if a connection is suspicious
 def is_suspicious(connection):
@@ -48,7 +56,7 @@ def main():
     folder_path = os.path.join(os.path.expanduser('~'), 'Documents', 'CyberKombatData')
     file_path = os.path.join(folder_path, 'network_info.csv')
 
-    run_powershell_script("NetworkInfo.ps1")
+    run_powershell_script(r"D:\CyberKombat RT\scripts\NetworkInfo.ps1")
 
     # Wait briefly for the CSV file to be ready
     time.sleep(0.25)
