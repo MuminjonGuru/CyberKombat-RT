@@ -31,7 +31,7 @@ Type
     LblRegistryChanges: TLabel;
     Label1: TLabel;
     MemoFileActivity: TMemo;
-    PythonGUIInputOutputFileActivity: TPythonGUIInputOutput;
+    PythonIOFileActivity: TPythonGUIInputOutput;
     TimerFileActivity: TTimer;
     MemoFileScanLog: TMemo;
     Label2: TLabel;
@@ -80,6 +80,7 @@ Type
     procedure BtnUpdateDaemonClick(Sender: TObject);
     procedure BtnScanReportClick(Sender: TObject);
     procedure BtnNetworkReportClick(Sender: TObject);
+    procedure TimerFileActivityTimer(Sender: TObject);
   Private
     VT_API_KEY: String;
     FAnalysis_ID: String;
@@ -576,6 +577,25 @@ Begin
     NetHTTPRequest.Free;
   End;
 End;
+
+procedure TFormMain.TimerFileActivityTimer(Sender: TObject);
+Var
+  ScriptFolder, ScriptPath: String;
+Begin
+  ScriptFolder := 'D:\CyberKombat RT\scripts';
+  ScriptPath := TPath.Combine(ScriptFolder, 'FileActivity.py');
+
+  PythonEngine.IO := PythonIOFileActivity;
+
+  If TFile.Exists(ScriptPath) Then
+  Begin
+    TPythonScriptThread.Create(ScriptPath);
+  End
+  Else
+  Begin
+    WriteToLogFile('FileActivity.py script not found or can`t access;');
+  End;
+end;
 
 procedure TFormMain.TimerFileAnalysisTimer(Sender: TObject);
 begin

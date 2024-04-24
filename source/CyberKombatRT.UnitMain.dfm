@@ -486,17 +486,20 @@ object FormMain: TFormMain
     Left = 158
     Top = 112
   end
-  object PythonGUIInputOutputFileActivity: TPythonGUIInputOutput
+  object PythonIOFileActivity: TPythonGUIInputOutput
+    DelayWrites = True
     UnicodeIO = True
     RawOutput = False
     Output = MemoFileActivity
-    Left = 400
-    Top = 128
+    Left = 604
+    Top = 152
   end
   object TimerFileActivity: TTimer
     Enabled = False
-    Left = 400
-    Top = 192
+    Interval = 2000
+    OnTimer = TimerFileActivityTimer
+    Left = 604
+    Top = 240
   end
   object OpenDialogFile: TOpenDialog
     Title = 'Select a file to upload'
