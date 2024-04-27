@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = TabSheet2
+    ActivePage = WebShield
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
