@@ -64,6 +64,7 @@ Type
     BtnNetworkReport: TButton;
     MemoNetworkGPT: TMemo;
     PythonIONetworkGPT: TPythonGUIInputOutput;
+    PyGUI_IO_FileActivity: TPythonGUIInputOutput;
     Procedure FormCreate(Sender: TObject);
     Procedure TimerNetworkActivityTimer(Sender: TObject);
     Procedure BtnURLScanVTClick(Sender: TObject);
@@ -585,7 +586,7 @@ Begin
   ScriptFolder := 'D:\CyberKombat RT\scripts';
   ScriptPath := TPath.Combine(ScriptFolder, 'FileActivity.py');
 
-  PythonEngine.IO := PythonIOFileActivity;
+  PythonEngine.IO := PyGUI_IO_FileActivity;
 
   If TFile.Exists(ScriptPath) Then
   Begin
@@ -654,11 +655,6 @@ Begin
   End;
 end;
 
-procedure TFormMain.ToggleSwitchFileActivityClick(Sender: TObject);
-begin
-  //
-end;
-
 procedure TFormMain.ToggleSwitchNetworkActivityClick(Sender: TObject);
 begin
   if ToggleSwitchNetworkActivity.State = tssOff then
@@ -674,16 +670,31 @@ begin
   end;
 end;
 
+procedure TFormMain.ToggleSwitchFileActivityClick(Sender: TObject);
+begin
+  if ToggleSwitchFileActivity.State = tssOff then
+  begin
+    TimerFileActivity.Enabled := False;
+    MemoFileActivity.Lines.Append('Service stopped.');
+  end
+  else if ToggleSwitchFileActivity.State = tssOn then
+  begin
+    TimerFileActivity.Enabled := True;
+    MemoFileActivity.Clear;
+    MemoFileActivity.Lines.Append('Service started.');
+  end;
+end;
+
 procedure TFormMain.ToggleSwitchRegistryChangesClick(Sender: TObject);
 begin
   if ToggleSwitchRegistryChanges.State = tssOff then
   begin
-    TimerRegistryLogReader.Enabled := False;
-    MemoRegistryChanges.Lines.Append('Service stopped.');
+//    TimerRegistryLogReader.Enabled := False;
+    MemoRegistryChanges.Lines.Append('Service stopped. Please use the script itself;');
   end
   else if ToggleSwitchRegistryChanges.State = tssOn then
   begin
-    TimerRegistryLogReader.Enabled := True;
+//    TimerRegistryLogReader.Enabled := True;
     MemoRegistryChanges.Clear;
     MemoRegistryChanges.Lines.Append('Service started.');
   end;

@@ -53,7 +53,7 @@ object FormMain: TFormMain
     Top = 0
     Width = 1040
     Height = 640
-    ActivePage = WebShield
+    ActivePage = TabSheet1
     Align = alClient
     TabOrder = 1
     object TabSheet1: TTabSheet
@@ -475,8 +475,8 @@ object FormMain: TFormMain
     Enabled = False
     Interval = 10000
     OnTimer = TimerNetworkActivityTimer
-    Left = 678
-    Top = 199
+    Left = 630
+    Top = 135
   end
   object PythonGUIInputOutputRegistry: TPythonGUIInputOutput
     DelayWrites = True
@@ -491,15 +491,15 @@ object FormMain: TFormMain
     UnicodeIO = True
     RawOutput = False
     Output = MemoFileActivity
-    Left = 604
-    Top = 152
+    Left = 396
+    Top = 128
   end
   object TimerFileActivity: TTimer
     Enabled = False
     Interval = 2000
     OnTimer = TimerFileActivityTimer
-    Left = 604
-    Top = 240
+    Left = 628
+    Top = 288
   end
   object OpenDialogFile: TOpenDialog
     Title = 'Select a file to upload'
@@ -521,8 +521,8 @@ object FormMain: TFormMain
   object TimerFileAnalysis: TTimer
     Enabled = False
     OnTimer = TimerFileAnalysisTimer
-    Left = 708
-    Top = 308
+    Left = 68
+    Top = 532
   end
   object TimerRegistryLogReader: TTimer
     Enabled = False
@@ -534,8 +534,8 @@ object FormMain: TFormMain
   object TimerDaemon: TTimer
     Enabled = False
     Interval = 7000
-    Left = 960
-    Top = 256
+    Left = 912
+    Top = 408
   end
   object PythonGUIInputOutputScanResult: TPythonGUIInputOutput
     UnicodeIO = True
@@ -546,14 +546,22 @@ object FormMain: TFormMain
   end
   object PythonEngine: TPythonEngine
     IO = PythonGUIInputOutputNA
-    Left = 864
-    Top = 240
+    Left = 840
+    Top = 48
   end
   object PythonIONetworkGPT: TPythonGUIInputOutput
     UnicodeIO = True
     RawOutput = False
     Output = MemoNetworkGPT
-    Left = 520
-    Top = 376
+    Left = 336
+    Top = 288
+  end
+  object PyGUI_IO_FileActivity: TPythonGUIInputOutput
+    DelayWrites = True
+    UnicodeIO = True
+    RawOutput = False
+    Output = MemoFileActivity
+    Left = 704
+    Top = 336
   end
 end
