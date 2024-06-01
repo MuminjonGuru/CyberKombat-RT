@@ -11,8 +11,24 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 # Suspicious criteria defined directly in the script
 suspicious_criteria = {
-    "suspicious_ports": [6667, 23, 21, 22, 80, 443, 8080, 445, 135, 139, 1433, 3306, 3389, 5900, 6000],
-    "suspicious_remote_addresses": ["123.123.123.123", "192.168.1.100", "203.0.113.5"]
+    "suspicious_ports": [
+        # Common ports used for malicious activity
+        135, 139, 445, 3389, # Windows services often exploited
+        21, 22, 23, # FTP, SSH, Telnet (often used for brute-forcing)
+        6667, # IRC (can be used for command and control)
+        # Ports for common services that are often misconfigured or vulnerable
+        80, 443, 8080,  # HTTP, HTTPS (web servers)
+        1433, # Microsoft SQL Server
+        3306, # MySQL
+        5900, 6000 # VNC (remote desktop)
+    ],
+    "suspicious_remote_addresses": [
+        # Well-known malicious IP addresses or ranges (examples)
+        "123.123.123.123",  # Placeholder for a known bad IP
+        "198.51.100.0/24",  # Example of a malicious network range
+        # Reserved private IP addresses (should not be seen in external traffic)
+        "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16" 
+    ],
 }
 
 # Function to run the PowerShell script silently
