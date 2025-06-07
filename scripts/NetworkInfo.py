@@ -5,6 +5,7 @@ import os
 import subprocess
 import threading
 import time
+import ipaddress
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -49,11 +50,29 @@ def run_powershell_script(script_name):
         logging.error(e.stderr)  # Log standard error
 
 # Function to check if a connection is suspicious
+def remote_address_matches(address):
+    """Check if an address matches any of the suspicious ranges."""
+    try:
+        ip = ipaddress.ip_address(address)
+    except ValueError:
+        return False
+
+    for remote in suspicious_criteria['suspicious_remote_addresses']:
+        if '/' in remote:
+            network = ipaddress.ip_network(remote, strict=False)
+            if ip in network:
+                return True
+        else:
+            if ip == ipaddress.ip_address(remote):
+                return True
+    return False
+
+
 def is_suspicious(connection):
     return (
         int(connection['LocalPort']) in suspicious_criteria['suspicious_ports'] or
         int(connection['RemotePort']) in suspicious_criteria['suspicious_ports'] or
-        connection['RemoteAddress'] in suspicious_criteria['suspicious_remote_addresses']
+        remote_address_matches(connection['RemoteAddress'])
     )
 
 # Analyze connections in a separate thread
